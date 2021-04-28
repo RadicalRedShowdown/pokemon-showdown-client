@@ -19,7 +19,7 @@ child_process.execSync('git pull', {cwd: 'data/pokemon-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/pokemon-showdown'});
 console.log("DONE");
 
-const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('radred');
+const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex;
 const toID = Dex.toID;
 process.stdout.write("Loading gen 6 data... ");
 Dex.includeData();
@@ -46,11 +46,11 @@ function requireNoCache(pathSpec) {
 
 	let index = [];
 
-	index = index.concat(Object.keys(Dex.data.Pokedex).map(x => x + ' pokemon'));
-	index = index.concat(Object.keys(Dex.data.Moves).map(x => x + ' move'));
-	index = index.concat(Object.keys(Dex.data.Items).map(x => x + ' item'));
-	index = index.concat(Object.keys(Dex.data.Abilities).map(x => x + ' ability'));
-	index = index.concat(Object.keys(Dex.data.TypeChart).map(x => toID(x) + ' type'));
+	index = index.concat(Object.keys(Dex.mod('radred').data.Pokedex).map(x => x + ' pokemon'));
+	index = index.concat(Object.keys(Dex.mod('radred').data.Moves).map(x => x + ' move'));
+	index = index.concat(Object.keys(Dex.mod('radred').data.Items).map(x => x + ' item'));
+	index = index.concat(Object.keys(Dex.mod('radred').data.Abilities).map(x => x + ' ability'));
+	index = index.concat(Object.keys(Dex.mod('radred').data.TypeChart).map(x => toID(x) + ' type'));
 	index = index.concat(['physical', 'special', 'status'].map(x => toID(x) + ' category'));
 	index = index.concat(['monster', 'water1', 'bug', 'flying', 'field', 'fairy', 'grass', 'humanlike', 'water3', 'mineral', 'amorphous', 'water2', 'ditto', 'dragon', 'undiscovered'].map(x => toID(x) + ' egggroup'));
 	index = index.concat(['ou', 'uu', 'ru', 'nu', 'pu', 'lc', 'nfe', 'uber', 'uubl', 'rubl', 'nubl', 'publ', 'cap', 'caplc', 'capnfe'].map(x => toID(x) + ' tier'));
@@ -283,11 +283,11 @@ function requireNoCache(pathSpec) {
 
 	let BattleSearchCountIndex = {};
 	for (const type in Dex.data.TypeChart) {
-		BattleSearchCountIndex[type + ' move'] = Object.keys(Dex.data.Moves).filter(id => (Dex.data.Moves[id].type === type)).length;
+		BattleSearchCountIndex[type + ' move'] = Object.keys(Dex.mod('radred').data.Moves).filter(id => (Dex.mod('radred').data.Moves[id].type === type)).length;
 	}
 
 	for (const type in Dex.data.TypeChart) {
-		BattleSearchCountIndex[type + ' pokemon'] = Object.keys(Dex.data.Pokedex).filter(id => (Dex.data.Pokedex[id].types.indexOf(type) >= 0)).length;
+		BattleSearchCountIndex[type + ' pokemon'] = Object.keys(Dex.mod('radred').data.Pokedex).filter(id => (Dex.mod('radred').data.Pokedex[id].types.indexOf(type) >= 0)).length;
 	}
 
 	let buf = '// DO NOT EDIT - automatically built with build-tools/build-indexes\n\n';
@@ -336,7 +336,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		const genNum = Math.floor(isDoubles ? -genIdent : genIdent);
 		const gen = isRR ? 'radred' : isLetsGo ? 'letsgo' : 'gen' + genNum + (isDLC1 ? 'dlc1' : '');
 		// process.stdout.write("" + gen + (isDoubles ? " doubles" : "") + "... ");
-		const pokemon = Object.keys(Dex.data.Pokedex);
+		const pokemon = Object.keys(Dex.mod('radred').data.Pokedex);
 		pokemon.sort();
 		const tierTable = {};
 		const overrideTier = {};
@@ -602,7 +602,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (!formatSlices['DUU']) formatSlices['DUU'] = formatSlices['New'];
 		}
 
-		const itemList = Object.keys(Dex.data.Items);
+		const itemList = Object.keys(Dex.mod('radred').data.Items);
 		itemList.sort();
 
 		const greatItems = [['header', "Popular items"]];
@@ -826,8 +826,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 
 	const learnsets = {};
 	BattleTeambuilderTable.learnsets = learnsets;
-	for (const id in Dex.data.Learnsets) {
-		const learnset = Dex.data.Learnsets[id].learnset;
+	for (const id in Dex.mod('radred').data.Learnsets) {
+		const learnset = Dex.mod('radred').data.Learnsets[id].learnset;
 		if (!learnset) continue;
 		learnsets[id] = {};
 		for (const moveid in learnset) {
@@ -1065,12 +1065,12 @@ process.stdout.write("Building `data/pokedex.js`... ");
 
 {
 	//const Pokedex = requireNoCache('../data/pokemon-showdown/.data-dist/pokedex.js').Pokedex;
-	const Pokedex = Dex.data.Pokedex;
+	const Pokedex = Dex.mod('radred').data.Pokedex;
 	for (const id in Pokedex) {
 		const entry = Pokedex[id];
-		if (Dex.data.FormatsData[id]) {
+		if (Dex.mod('radred').data.FormatsData[id]) {
 			// console.log('formatsentry:' + id);
-			const formatsEntry = Dex.data.FormatsData[id];
+			const formatsEntry = Dex.mod('radred').data.FormatsData[id];
 			if (formatsEntry.tier) entry.tier = formatsEntry.tier;
 			if (formatsEntry.isNonstandard) entry.isNonstandard = formatsEntry.isNonstandard;
 			if (formatsEntry.unreleasedHidden) entry.unreleasedHidden = formatsEntry.unreleasedHidden;
@@ -1091,9 +1091,9 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 
 {
 	//const Moves = requireNoCache('../data/pokemon-showdown/.data-dist/moves.js').Moves;
-	const Moves = Dex.data.Moves;
+	const Moves = Dex.mod('radred').data.Moves;
 	for (const id in Moves) {
-		const move = Dex.moves.get(Moves[id].name);
+		const move = Dex.mod('radred').moves.get(Moves[id].name);
 		if (move.desc) Moves[id].desc = move.desc;
 		if (move.shortDesc) Moves[id].shortDesc = move.shortDesc;
 	}
@@ -1108,9 +1108,9 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 
 {
 	//const Items = requireNoCache('../data/pokemon-showdown/.data-dist/items.js').Items;
-	const Items = Dex.data.Items;
+	const Items = Dex.mod('radred').data.Items;
 	for (const id in Items) {
-		const item = Dex.items.get(Items[id].name);
+		const item = Dex.mod('radred').items.get(Items[id].name);
 		if (item.desc) Items[id].desc = item.desc;
 		if (item.shortDesc) Items[id].shortDesc = item.shortDesc;
 	}
@@ -1124,9 +1124,9 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 
 {
 	//const Abilities = requireNoCache('../data/pokemon-showdown/.data-dist/abilities.js').Abilities;
-	const Abilities = Dex.data.Abilities;
+	const Abilities = Dex.mod('radred').data.Abilities;
 	for (const id in Abilities) {
-		const ability = Dex.abilities.get(Abilities[id].name);
+		const ability = Dex.mod('radred').abilities.get(Abilities[id].name);
 		if (ability.desc) Abilities[id].desc = ability.desc;
 		if (ability.shortDesc) Abilities[id].shortDesc = ability.shortDesc;
 	}
@@ -1160,7 +1160,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 
 {
 	//const FormatsData = requireNoCache('../data/pokemon-showdown/.data-dist/formats-data.js').FormatsData;
-	const FormatsData = Dex.data.FormatsData;
+	const FormatsData = Dex.mod('radred').data.FormatsData;
 	const buf = 'exports.BattleFormatsData = ' + es3stringify(FormatsData) + ';';
 	fs.writeFileSync('data/formats-data.js', buf);
 }
@@ -1181,7 +1181,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 
 {
 	//const Learnsets = requireNoCache('../data/pokemon-showdown/.data-dist/learnsets.js').Learnsets;
-	const Learnsets = Dex.data.Learnsets;
+	const Learnsets = Dex.mod('radred').data.Learnsets;
 	const buf = 'exports.BattleLearnsets = ' + es3stringify(Learnsets) + ';';
 	fs.writeFileSync('data/learnsets.js', buf);
 }
