@@ -49,11 +49,12 @@ Storage.bg = {
 	 */
 	load: function (bgUrl, bgid, hues) {
 		this.id = bgid;
+		const bgs = ['houndoom', 'krookodile', 'zekrom', 'typhlosion', 'tapukoko', 'meganium', 'machamp', 'ferrothorn', 'dialga', 'delphox', 'delibird', 'darkrai'];
 		if (!bgid) {
 			if (location.host === 'smogtours.psim.us') {
 				bgid = 'shaymin';
 			} else if (location.host === Config.routes.client) {
-				bgid = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards', 'psday'][Math.floor(Math.random() * 6)];
+				bgid = bgs[Math.floor(Math.random() * bgs.length)];
 			} else {
 				$(document.body).css({
 					background: '',

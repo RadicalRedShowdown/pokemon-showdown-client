@@ -765,14 +765,21 @@
 
 			buf += '</div><div style="clear:left"></div>';
 			buf += '<p><strong>Official</strong></p>';
+			buf += '<p>These backgrounds are by deviantart user ishmam. Check out more of their work <a href="https://www.deviantart.com/ishmam/gallery/40656081/pokemon-power-portraits" target="_blank">here</a>.';
 			buf += '<div class="bglist">';
 
-			buf += '<button name="setBg" value="charizards"' + (cur === 'charizards' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 0) + 'px"></span>Charizards</button>';
-			buf += '<button name="setBg" value="horizon"' + (cur === 'horizon' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 1) + 'px"></span>Horizon</button>';
-			buf += '<button name="setBg" value="waterfall"' + (cur === 'waterfall' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 2) + 'px"></span>Waterfall</button>';
-			buf += '<button name="setBg" value="ocean"' + (cur === 'ocean' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 3) + 'px"></span>Ocean</button>';
-			buf += '<button name="setBg" value="shaymin"' + (cur === 'shaymin' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 4) + 'px"></span>Shaymin</button>';
-			buf += '<button name="setBg" value="solidblue"' + (cur === 'solidblue' ? ' class="cur"' : '') + '><span class="bg" style="background: #344b6c"></span>Solid blue</button>';
+			buf += '<button name="setBg" value="houndoom"' + (cur === 'houndoom' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 0) + 'px"></span>Houndoom</button>';
+			buf += '<button name="setBg" value="krookodile"' + (cur === 'krookodile' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 1) + 'px"></span>Krookodile</button>';
+			buf += '<button name="setBg" value="zekrom"' + (cur === 'zekrom' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 2) + 'px"></span>Zekrom</button>';
+			buf += '<button name="setBg" value="typhlosion"' + (cur === 'typhlosion' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 3) + 'px"></span>Typhlosion</button>';
+			buf += '<button name="setBg" value="tapukoko"' + (cur === 'tapukoko' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 4) + 'px"></span>Tapu Koko</button>';
+			buf += '<button name="setBg" value="meganium"' + (cur === 'meganium' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 5) + 'px"></span>Meganium</button>';
+			buf += '<button name="setBg" value="machamp"' + (cur === 'machamp' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 6) + 'px"></span>Machamp</button>';
+			buf += '<button name="setBg" value="ferrothorn"' + (cur === 'ferrothorn' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 7) + 'px"></span>Ferrothorn</button>';
+			buf += '<button name="setBg" value="dialga"' + (cur === 'dialga' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 8) + 'px"></span>Dialga</button>';
+			buf += '<button name="setBg" value="delphox"' + (cur === 'delphox' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 9) + 'px"></span>Delphox</button>';
+			buf += '<button name="setBg" value="delibird"' + (cur === 'delibird' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 10) + 'px"></span>Delibird</button>';
+			buf += '<button name="setBg" value="darkrai"' + (cur === 'darkrai' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 11) + 'px"></span>Darkrai</button>';
 
 			buf += '</div><div style="clear:left"></div>';
 			buf += '<p><strong>Custom</strong></p>';

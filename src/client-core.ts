@@ -213,9 +213,9 @@ const PSBackground = new class extends PSStreamModel {
 			if (location.host === 'smogtours.psim.us') {
 				bgid = 'shaymin';
 			} else if (location.host === Config.routes.client) {
-				const bgs = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards'];
-				bgid = bgs[Math.floor(Math.random() * 5)];
-				if (bgid === this.curId) bgid = bgs[Math.floor(Math.random() * 5)];
+				const bgs = ['houndoom', 'krookodile', 'zekrom', 'typhlosion', 'tapukoko', 'meganium', 'machamp', 'ferrothorn', 'dialga', 'delphox', 'delibird', 'darkrai'];
+				bgid = bgs[Math.floor(Math.random() * bgs.length)];
+				if (bgid === this.curId) bgid = bgs[Math.floor(Math.random() * bgs.length)];
 			}
 		}
 		this.curId = bgid;
