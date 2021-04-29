@@ -1710,6 +1710,7 @@ class Battle {
 
 			if (effect.id) {
 				switch (effect.id) {
+				case 'soulrobbery':
 				case 'spectralthief':
 					// todo: update StealBoosts so it animates 1st on Spectral Thief
 					this.scene.runOtherAnim('spectralthiefboost' as ID, [ofpoke!, poke]);

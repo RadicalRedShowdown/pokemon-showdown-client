@@ -3315,7 +3315,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	morningsun: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 700, 0.5);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 700, 0.5);
 			scene.showEffect('wisp', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -3368,7 +3368,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	moonlight: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
 			scene.showEffect('shine', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -3440,7 +3440,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	cosmicpower: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.6);
 			scene.showEffect('wisp', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -4921,7 +4921,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	seismictoss: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 500, 0.6, 300);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 500, 0.6, 300);
 			scene.showEffect('wisp', {
 				x: defender.x,
 				y: defender.y + 10,
@@ -7472,7 +7472,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	meteormash: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.4);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.4);
 			scene.showEffect(attacker.sp, {
 				x: attacker.leftof(20),
 				y: attacker.y,
@@ -8875,6 +8875,51 @@ const BattleMoveAnims: AnimTable = {
 				opacity: 0,
 				time: 900,
 			}, 'linear');
+
+			BattleOtherAnims.bite.anim(scene, [attacker, defender]);
+			BattleOtherAnims.contactattack.anim(scene, [attacker, defender]);
+		},
+	},
+	aquafang: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('waterwisp', {
+				x: defender.x,
+				y: defender.y + 80,
+				z: defender.behind(-15),
+				scale: 1.5,
+				opacity: 0.8,
+				time: 400,
+			}, {
+				y: defender.y,
+				z: defender.z,
+				scale: 0.5,
+				opacity: 1,
+				time: 500,
+			}, 'linear', 'explode');
+			scene.showEffect('waterwisp', {
+				x: defender.x,
+				y: defender.y - 25,
+				z: defender.z,
+				scale: 1,
+				time: 500,
+			}, {
+				x: defender.x + 50,
+				scale: 0.6,
+				opacity: 0.3,
+				time: 800,
+			}, 'linear', 'fade');
+			scene.showEffect('waterwisp', {
+				x: defender.x,
+				y: defender.y - 25,
+				z: defender.z,
+				scale: 1,
+				time: 500,
+			}, {
+				x: defender.x - 50,
+				scale: 0.6,
+				opacity: 0.3,
+				time: 800,
+			}, 'linear', 'fade');
 
 			BattleOtherAnims.bite.anim(scene, [attacker, defender]);
 			BattleOtherAnims.contactattack.anim(scene, [attacker, defender]);
@@ -14513,6 +14558,57 @@ const BattleMoveAnims: AnimTable = {
 			}, 'ballistic', 'explode');
 		},
 	},
+	shellsidearm: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('poisonwisp', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.behind(-30),
+				scale: 3,
+				opacity: 0.3,
+			}, {
+				scale: 0.6,
+				opacity: 1,
+				time: 300,
+			}, 'decel', 'fade');
+			scene.showEffect('poisonwisp', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.behind(-30),
+				scale: 3,
+				opacity: 0.3,
+				time: 100,
+			}, {
+				scale: 0.8,
+				opacity: 0.6,
+				time: 400,
+			}, 'decel', 'fade');
+			scene.showEffect('poisonwisp', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.behind(-30),
+				scale: 0.6,
+				opacity: 0.8,
+				time: 400,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.behind(20),
+				scale: 1,
+				opacity: 0.8,
+				time: 800,
+			}, 'accel', 'explode');
+
+			defender.delay(800);
+			defender.anim({
+				z: defender.behind(10),
+				time: 200,
+			}, 'swing');
+			defender.anim({
+				time: 300,
+			}, 'swing');
+		},
+	},
 	mudbomb: {
 		anim(scene, [attacker, defender]) {
 			scene.showEffect('mudwisp', {
@@ -16146,7 +16242,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	psystrike: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-psychicterrain.png')`, 950, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-psychicterrain.png')`, 950, 0.6);
 			scene.showEffect('poisonwisp', {
 				x: defender.x - 100,
 				y: defender.y,
@@ -16896,7 +16992,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	moonblast: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
 			scene.showEffect('mistball', {
 				x: attacker.x,
 				y: attacker.y,
@@ -17160,7 +17256,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	wish: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
 
 			scene.showEffect('wisp', {
 				x: attacker.x,
@@ -17174,7 +17270,7 @@ const BattleMoveAnims: AnimTable = {
 			}, 'accel');
 		},
 		residualAnim(scene, [attacker]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
 
 			scene.showEffect('wisp', {
 				x: attacker.x,
@@ -18251,7 +18347,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	dracometeor: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1100, 0.8);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1100, 0.8);
 			scene.showEffect('flareball', {
 				x: defender.leftof(-200),
 				y: defender.y + 175,
@@ -19695,7 +19791,7 @@ const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
 
 			for (let i = 0; i < 5; i++) {
 				scene.showEffect('energyball', {
@@ -19839,7 +19935,7 @@ const BattleMoveAnims: AnimTable = {
 			let ystep = 20;
 			let zstep = 0;
 
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
 
 			scene.showEffect('sword', {
 				x: attacker.leftof(10),
@@ -20124,7 +20220,7 @@ const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sandstorm.png')`, 900, 0.5);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sandstorm.png')`, 900, 0.5);
 
 			for (let i = 0; i < 5; i++) {
 				scene.showEffect('mudwisp', {
@@ -20324,7 +20420,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	sheercold: { // Reminder: Improve this later
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
 			scene.showEffect('icicle', {
 				x: defender.x,
 				y: defender.y,
@@ -20342,7 +20438,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	glaciallance: {
 		anim(scene, [attacker, ...defenders]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
 			for (const defender of defenders) {
 				scene.showEffect('icicle', {
 					x: defender.x,
@@ -22657,7 +22753,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	dragonascent: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.7);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.7);
 			scene.showEffect('iceball', {
 				x: attacker.leftof(-25),
 				y: attacker.y + 250,
@@ -26146,9 +26242,103 @@ const BattleMoveAnims: AnimTable = {
 			});
 		},
 	},
+	soulrobbery: {
+		anim(scene, [attacker, defender]) {
+			scene.backgroundEffect('#AA44BB', 250, 0.6);
+			scene.backgroundEffect('#AA44FF', 250, 0.6, 400);
+			defender.anim({
+				scale: 1.2,
+				time: 100,
+			});
+			defender.anim({
+				scale: 1,
+				time: 100,
+			});
+			defender.anim({
+				scale: 1.4,
+				time: 150,
+			});
+			defender.anim({
+				scale: 1,
+				time: 150,
+			});
+			scene.wait(700);
+			
+			scene.backgroundEffect('#000000', 700, 0.3);
+			scene.showEffect('poisonwisp', {
+				x: defender.x + 40,
+				y: defender.y,
+				z: defender.z,
+				scale: 0,
+				opacity: 1,
+			}, {
+				scale: 3,
+				opacity: 0,
+			}, 'decel');
+			scene.showEffect('poisonwisp', {
+				x: defender.x - 40,
+				y: defender.y - 20,
+				z: defender.z,
+				scale: 0,
+				opacity: 1,
+				time: 150,
+			}, {
+				scale: 3,
+				opacity: 0,
+			}, 'decel');
+			scene.showEffect('poisonwisp', {
+				x: defender.x + 10,
+				y: defender.y + 20,
+				z: defender.z,
+				scale: 0,
+				opacity: 1,
+				time: 300,
+			}, {
+				scale: 3,
+				opacity: 0,
+			}, 'decel');
+
+			scene.showEffect('bluefireball', {
+				x: defender.x + 40,
+				y: defender.y + 30,
+				z: defender.z,
+				scale: 0.8,
+				opacity: 0.5,
+				time: 0,
+			}, {
+				y: defender.y + 60,
+				opacity: 0,
+				time: 400,
+			}, 'accel');
+			scene.showEffect('bluefireball', {
+				x: defender.x - 40,
+				y: defender.y + 30,
+				z: defender.z,
+				scale: 0.8,
+				opacity: 0.5,
+				time: 200,
+			}, {
+				y: defender.y + 60,
+				opacity: 0,
+				time: 600,
+			}, 'accel');
+			scene.showEffect('bluefireball', {
+				x: defender.x,
+				y: defender.y + 40,
+				z: defender.z,
+				scale: 0.8,
+				opacity: 0.5,
+				time: 400,
+			}, {
+				y: defender.y + 60,
+				opacity: 0,
+				time: 800,
+			}, 'accel');
+		},
+	},
 	plasmafists: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 1);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 1);
 			scene.backgroundEffect('#000000', 1000, 0.6);
 			scene.backgroundEffect('#FFFFFF', 300, 0.6, 1000);
 			scene.showEffect('electroball', {
@@ -27434,6 +27624,85 @@ const BattleMoveAnims: AnimTable = {
 				scale: 6,
 				opacity: 0,
 			}, 'linear');
+		},
+	},
+	forbiddenspell: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('poisonwisp', {
+				x: attacker.x + 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 1,
+				time: 400,
+			}, {
+				x: attacker.x - 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.4,
+				opacity: 0.4,
+				time: 600,
+			}, 'linear', 'fade');
+			scene.showEffect('poisonwisp', {
+				x: attacker.x - 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 1,
+				time: 400,
+			}, {
+				x: attacker.x + 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.4,
+				opacity: 0.4,
+				time: 600,
+			}, 'linear', 'fade');
+			scene.showEffect('poisonwisp', {
+				x: attacker.x + 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 1,
+				time: 600,
+			}, {
+				x: attacker.x - 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.4,
+				opacity: 0.4,
+				time: 800,
+			}, 'linear', 'fade');
+			scene.showEffect('poisonwisp', {
+				x: attacker.x - 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 1,
+				time: 600,
+			}, {
+				x: attacker.x + 50,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.4,
+				opacity: 0.4,
+				time: 800,
+			}, 'linear', 'fade');
+			scene.wait(1000);
+
+			scene.showEffect('electroball', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0,
+				opacity: 0.1,
+				time: 0,
+			}, {
+				scale: 2,
+				opacity: 0.5,
+				time: 1000,
+			}, 'linear');
+			scene.wait(500);
 		},
 	},
 
@@ -30219,7 +30488,7 @@ const BattleMoveAnims: AnimTable = {
 	oceanicoperetta: {
 		anim(scene, [attacker, defender]) {
 			scene.backgroundEffect('linear-gradient(#000000 20%, #0000DD)', 2700, 0.4);
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-raindance.jpg')`, 700, 0.2, 2000);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-raindance.jpg')`, 700, 0.2, 2000);
 			scene.showEffect('iceball', {
 				x: attacker.x,
 				y: attacker.y + 120,
@@ -30542,7 +30811,7 @@ const BattleMoveAnims: AnimTable = {
 	},
 	splinteredstormshards: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2700, 0.8, 300);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2700, 0.8, 300);
 			scene.backgroundEffect('linear-gradient(#FFC720 15%, #421800)', 2700, 0.7);
 			scene.backgroundEffect('#ffffff', 400, 0.6, 2500);
 			scene.showEffect('rock3', {
@@ -31265,7 +31534,7 @@ const BattleMoveAnims: AnimTable = {
 			}
 			const defender = defenders[1] || defenders[0];
 			scene.backgroundEffect('#000000', 300, 0.9);
-			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 0.7, 300);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 0.7, 300);
 			scene.backgroundEffect('linear-gradient(#FB5C1E 20%, #3F1D0F', 2000, 0.6, 300);
 			scene.backgroundEffect('#FFFFFF', 1000, 0.9, 2200);
 			scene.showEffect('shine', {
@@ -31937,8 +32206,8 @@ const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-trickroom.png')`, 700, 1);
-			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 2500, 1, 700);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-trickroom.png')`, 700, 1);
+			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 2500, 1, 700);
 			scene.backgroundEffect('#FFFFFF', 1500, 1, 2500);
 
 			scene.showEffect('flareball', {
