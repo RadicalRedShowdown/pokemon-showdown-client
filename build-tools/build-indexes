@@ -19,7 +19,7 @@ child_process.execSync('git pull', {cwd: 'data/pokemon-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/pokemon-showdown'});
 console.log("DONE");
 
-const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8rr');
+const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('radred');
 const toID = Dex.toID;
 process.stdout.write("Loading gen 6 data... ");
 Dex.includeData();
@@ -334,7 +334,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		const isVGC = (genIdent === -7.5);
 		const isRR = (genIdent === 8.69);
 		const genNum = Math.floor(isDoubles ? -genIdent : genIdent);
-		const gen = isRR ? 'gen8rr' :
+		const gen = isRR ? 'radred' :
 		isLetsGo ? 'letsgo' : 'gen' + genNum + (isDLC1 ? 'dlc1' : '');
 		// process.stdout.write("" + gen + (isDoubles ? " doubles" : "") + "... ");
 		const pokemon = Object.keys(Dex.data.Pokedex);
