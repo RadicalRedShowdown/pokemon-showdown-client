@@ -1462,6 +1462,7 @@
 			buf += '<p><label class="optlabel"><input type="checkbox" name="ignorespects"' + (this.battle.ignoreSpects ? ' checked' : '') + '/> Ignore spectators</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="ignoreopp"' + (this.battle.ignoreOpponent ? ' checked' : '') + '/> Ignore opponent</label></p>';
 			buf += '<p><strong>All battles</strong></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="statstages"' + (Dex.prefs('statstages') ? ' checked' : '') + ' /> Show </label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="ignorenicks"' + (Dex.prefs('ignorenicks') ? ' checked' : '') + ' /> Ignore nicknames</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="allignorespects"' + (Dex.prefs('ignorespects') ? ' checked' : '') + '/> Ignore spectators</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="allignoreopp"' + (Dex.prefs('ignoreopp') ? ' checked' : '') + '/> Ignore opponent</label></p>';
@@ -1478,7 +1479,8 @@
 			'change input[name=allignorespects]': 'toggleAllIgnoreSpects',
 			'change input[name=allignoreopp]': 'toggleAllIgnoreOpponent',
 			'change input[name=autotimer]': 'toggleAutoTimer',
-			'change input[name=rightpanelbattles]': 'toggleRightPanelBattles'
+			'change input[name=rightpanelbattles]': 'toggleRightPanelBattles',
+			'change input[name=statstages]': 'toggleStatStages'
 		},
 		toggleHardcoreMode: function (e) {
 			this.room.setHardcoreMode(!!e.currentTarget.checked);
@@ -1530,6 +1532,9 @@
 		},
 		toggleRightPanelBattles: function (e) {
 			Storage.prefs('rightpanelbattles', !!e.currentTarget.checked);
+		},
+		toggleStatStages: function (e) {
+			Storage.prefs('statstages', !!e.currentTarget.checked);
 		}
 	});
 
