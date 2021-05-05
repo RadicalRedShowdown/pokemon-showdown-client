@@ -1066,6 +1066,8 @@ interface MoveFlags {
 	authentic?: 1 | 0;
 	/** Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability. */
 	bite?: 1 | 0;
+	/** Power is multiplied by 1.2 when used by a Pokemon with the Blademaster Ability. */
+	blade?: 1 | 0;
 	/** Has no effect on Pokemon with the Bulletproof Ability. */
 	bullet?: 1 | 0;
 	/** The user is unable to make a move between turns. */
@@ -1082,6 +1084,8 @@ interface MoveFlags {
 	gravity?: 1 | 0;
 	/** Prevented from being executed or selected during Heal Block's effect. */
 	heal?: 1 | 0;
+	/** Power is multiplied by 1.3 when used by a Pokemon with the Stiker Ability. */
+	kick?: 1 | 0;
 	/** Can be copied by Mirror Move. */
 	mirror?: 1 | 0;
 	/** Unknown effect. */

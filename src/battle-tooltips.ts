@@ -735,6 +735,12 @@ class BattleTooltips {
 			if (move.flags.bite && ability === 'strongjaw') {
 				text += `<p class="movetag">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>`;
 			}
+			if (move.flags.blade && ability === 'blademaster') {
+				text += `<p class="movetag">&#x2713; Fist <small>(boosted by Blademaster)</small></p>`;
+			}
+			if (move.flags.kick && ability === 'striker') {
+				text += `<p class="movetag">&#x2713; Fist <small>(boosted by Striker)</small></p>`;
+			}
 			if ((move.recoil || move.hasCrashDamage) && ability === 'reckless') {
 				text += `<p class="movetag">&#x2713; Recoil <small>(boosted by Reckless)</small></p>`;
 			}
@@ -816,7 +822,7 @@ class BattleTooltips {
 			text += '<p><small>HP:</small> ' + Pokemon.getHPText(pokemon) + exacthp + (pokemon.status ? ' <span class="status ' + pokemon.status + '">' + pokemon.status.toUpperCase() + '</span>' : '');
 			if (clientPokemon) {
 				if (pokemon.status === 'tox') {
-					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Magic Guard') {
+					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Toxic Boost' || pokemon.ability === 'Magic Guard') {
 						text += ' <small>Would take if ability removed: ' + Math.floor(100 / 16 * Math.min(clientPokemon.statusData.toxicTurns + 1, 15)) + '%</small>';
 					} else {
 						text += ' Next damage: ' + Math.floor(100 / (clientPokemon.volatiles['dynamax'] ? 32 : 16) * Math.min(clientPokemon.statusData.toxicTurns + 1, 15)) + '%';
@@ -1073,8 +1079,14 @@ class BattleTooltips {
 		if (ability === 'purepower' || ability === 'hugepower') {
 			stats.atk *= 2;
 		}
+		if (ability === 'felinepower') {
+			stats.spa *= 2;
+		}
 		if (ability === 'hustle' || (ability === 'gorillatactics' && !clientPokemon?.volatiles['dynamax'])) {
 			stats.atk = Math.floor(stats.atk * 1.5);
+		}
+		if (ability === 'sagepower' && !clientPokemon?.volatiles['dynamax']) {
+			stats.atk = Math.floor(stats.spa * 1.5);
 		}
 		if (weather) {
 			if (this.battle.gen >= 4 && this.pokemonHasType(serverPokemon, 'Rock') && weather === 'sandstorm') {
@@ -1090,17 +1102,12 @@ class BattleTooltips {
 				if (weather === 'sunnyday' || weather === 'desolateland') {
 					if (ability === 'solarpower') {
 						stats.spa = Math.floor(stats.spa * 1.5);
+						stats.def = Math.floor(stats.spa * 1.33);
+						stats.spd = Math.floor(stats.spa * 1.33);
 					}
-					let allyActive = clientPokemon?.side.active;
-					if (allyActive) {
-						for (const ally of allyActive) {
-							if (!ally || ally.fainted) continue;
-							let allyAbility = this.getAllyAbility(ally);
-							if (allyAbility === 'Flower Gift' && (ally.getSpecies().baseSpecies === 'Cherrim' || this.battle.gen <= 4)) {
-								stats.atk = Math.floor(stats.atk * 1.5);
-								stats.spd = Math.floor(stats.spd * 1.5);
-							}
-						}
+					if (ability === 'flowergift' && (species === 'Cherrim' || this.battle.gen <= 4)) {
+						stats.atk = Math.floor(stats.atk * 1.5);
+						stats.spe = Math.floor(stats.spe * 1.5);
 					}
 				}
 				if (ability === 'chlorophyll' && (weather === 'sunnyday' || weather === 'desolateland')) {
@@ -1111,7 +1118,7 @@ class BattleTooltips {
 				}
 			}
 		}
-		if (ability === 'defeatist' && serverPokemon.hp <= serverPokemon.maxhp / 2) {
+		if (ability === 'defeatist' && serverPokemon.hp <= serverPokemon.maxhp / 3) {
 			stats.atk = Math.floor(stats.atk * 0.5);
 			stats.spa = Math.floor(stats.spa * 0.5);
 		}
@@ -1323,14 +1330,11 @@ class BattleTooltips {
 
 		let pokemonTypes = value.pokemon.getTypeList(value.serverPokemon);
 		value.reset();
-		if (move.id === 'revelationdance') {
+		if (move.id === 'revelationdance' || move.id === 'multiattack') {
 			moveType = pokemonTypes[0];
 		}
 		// Moves that require an item to change their type.
 		let item = Dex.items.get(value.itemName);
-		if (move.id === 'multiattack' && item.onMemory) {
-			if (value.itemModify(0)) moveType = item.onMemory;
-		}
 		if (move.id === 'judgment' && item.onPlate && !item.zMoveType) {
 			if (value.itemModify(0)) moveType = item.onPlate;
 		}
@@ -1697,9 +1701,7 @@ class BattleTooltips {
 			value.abilityModify(1.3, "Punk Rock");
 		}
 		if (target) {
-			if (["MF", "FM"].includes(pokemon.gender + target.gender)) {
-				value.abilityModify(0.75, "Rivalry");
-			} else if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
+			if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
 				value.abilityModify(1.25, "Rivalry");
 			}
 		}
@@ -1718,7 +1720,13 @@ class BattleTooltips {
 			}
 		}
 		if (move.flags['punch']) {
-			value.abilityModify(1.2, 'Iron Fist');
+			value.abilityModify(1.3, 'Iron Fist');
+		}
+		if (move.flags['blade']) {
+			value.abilityModify(1.2, 'Blademaster');
+		}
+		if (move.flags['kick']) {
+			value.abilityModify(1.3, 'Striker');
 		}
 		if (move.recoil || move.hasCrashDamage) {
 			value.abilityModify(1.2, 'Reckless');
