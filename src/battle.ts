@@ -2744,6 +2744,9 @@ class Battle {
 			case 'focusband':
 				poke.item = 'Focus Band';
 				break;
+			case 'quickclaw':
+				poke.item = 'Quick Claw';
+				break;
 			default:
 				if (kwArgs.broken) { // for custom moves that break protection
 					this.scene.resultAnim(poke, 'Protection broken', 'bad');
@@ -3297,6 +3300,18 @@ class Battle {
 			let pokemon = this.rememberTeamPreviewPokemon(args[1], args[2])!;
 			if (args[3] === 'item') {
 				pokemon.item = '(exists)';
+			}
+			break;
+		}
+		case 'updatepoke': {
+			const {siden} = this.parsePokemonId(args[1]);
+			const side = this.sides[siden];
+			for (let i = 0; i < side.pokemon.length; i++) {
+				const pokemon = side.pokemon[i];
+				if (pokemon.checkDetails(args[2])) {
+					side.addPokemon('', '', args[2], i);
+					break;
+				}
 			}
 			break;
 		}

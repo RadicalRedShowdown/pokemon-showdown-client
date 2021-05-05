@@ -838,8 +838,9 @@ function toId() {
 			var out = [];
 			for (var i = 0; i < elements.length; i++) {
 				var element = elements[i];
-				// TODO: values are a mess in the DOM; checkboxes/select probably need special handling
-				out.push([element.name, element.value]);
+				if (!['checkbox', 'radio'].includes(element.type) || element.checked) {
+					out.push([element.name, element.value]);
+				}
 			}
 			return out;
 		},
@@ -2604,11 +2605,11 @@ function toId() {
 				buf += '<span class="userstatus' + (offline ? ' offline' : '') + '">' + BattleLog.escapeHTML(status) + '<br /></span>';
 			}
 			if (groupName) {
-				buf += '<small class="usergroup roomgroup">' + BattleLog.escapeHTML(groupName) + '</small>';
+				buf += '<small class="usergroup roomgroup">' + groupName + '</small>';
 				if (globalGroupName) buf += '<br />';
 			}
 			if (globalGroupName) {
-				buf += '<small class="usergroup globalgroup">' + BattleLog.escapeHTML(globalGroupName) + '</small>';
+				buf += '<small class="usergroup globalgroup">' + globalGroupName + '</small>';
 			}
 			if (data.customgroup) {
 				if (groupName || globalGroupName) buf += '<br />';
