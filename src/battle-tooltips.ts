@@ -736,10 +736,10 @@ class BattleTooltips {
 				text += `<p class="movetag">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>`;
 			}
 			if (move.flags.blade && ability === 'blademaster') {
-				text += `<p class="movetag">&#x2713; Fist <small>(boosted by Blademaster)</small></p>`;
+				text += `<p class="movetag">&#x2713; Blade <small>(boosted by Blademaster)</small></p>`;
 			}
 			if (move.flags.kick && ability === 'striker') {
-				text += `<p class="movetag">&#x2713; Fist <small>(boosted by Striker)</small></p>`;
+				text += `<p class="movetag">&#x2713; Kick <small>(boosted by Striker)</small></p>`;
 			}
 			if ((move.recoil || move.hasCrashDamage) && ability === 'reckless') {
 				text += `<p class="movetag">&#x2713; Recoil <small>(boosted by Reckless)</small></p>`;
