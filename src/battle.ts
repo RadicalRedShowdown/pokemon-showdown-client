@@ -1345,7 +1345,12 @@ class Battle {
 		}
 		this.scene.updateStatbar(pokemon);
 		if (fromeffect.id === 'sleeptalk') {
-			pokemon.rememberMove(move.name, 0);
+			let pp = 0;
+			if (move.id === 'strengthsap') {
+				pp += 1;
+			}
+			console.log(pp);
+			pokemon.rememberMove(move.name, pp);
 		} else if (!fromeffect.id || fromeffect.id === 'pursuit') {
 			let moveName = move.name;
 			if (move.isZ) {
@@ -1369,6 +1374,9 @@ class Battle {
 					}
 				}
 			} else if (target && target.side !== pokemon.side && toID(target.ability) === 'pressure') {
+				pp += 1;
+			}
+			if (move.id === 'strengthsap') {
 				pp += 1;
 			}
 			pokemon.rememberMove(moveName, pp);
