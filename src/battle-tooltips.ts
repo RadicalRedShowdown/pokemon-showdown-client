@@ -1086,7 +1086,7 @@ class BattleTooltips {
 			stats.atk = Math.floor(stats.atk * 1.5);
 		}
 		if (ability === 'sagepower' && !clientPokemon?.volatiles['dynamax']) {
-			stats.atk = Math.floor(stats.spa * 1.5);
+			stats.spa = Math.floor(stats.spa * 1.5);
 		}
 		if (weather) {
 			if (this.battle.gen >= 4 && this.pokemonHasType(serverPokemon, 'Rock') && weather === 'sandstorm') {
@@ -1102,8 +1102,8 @@ class BattleTooltips {
 				if (weather === 'sunnyday' || weather === 'desolateland') {
 					if (ability === 'solarpower') {
 						stats.spa = Math.floor(stats.spa * 1.5);
-						stats.def = Math.floor(stats.spa * 1.33);
-						stats.spd = Math.floor(stats.spa * 1.33);
+						stats.def = Math.floor(stats.def * 1.33);
+						stats.spd = Math.floor(stats.spd * 1.33);
 					}
 					if (ability === 'flowergift' && (species === 'Cherrim' || this.battle.gen <= 4)) {
 						stats.atk = Math.floor(stats.atk * 1.5);
