@@ -617,7 +617,7 @@ const Dex = new class implements ModdedDex {
 		if (animationData[facing + 'f'] && options.gender === 'F') facing += 'f';
 		let allowAnim = !Dex.prefs('noanim') && !Dex.prefs('nogif');
 		if (allowAnim && spriteData.gen >= 6) spriteData.pixelated = false;
-		if (allowAnim && animationData[facing + (options.shiny && mechanicsGen > 1 ? 'shiny' : '')] && spriteData.gen >= 5) {
+		if (allowAnim && animationData[facing] && spriteData.gen >= 5) {
 			if (facing.slice(-1) === 'f') name += '-f';
 			dir = baseDir + 'ani' + dir;
 

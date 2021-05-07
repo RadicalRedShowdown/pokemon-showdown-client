@@ -67,21 +67,13 @@ function updateSizes() {
 			{
 				let g5row = {num: species.num};
 				const frontSize = sizeObj('sprites/gen5ani/' + spriteid + '.gif');
-				const frontSizeShiny = sizeObj('sprites/gen5ani-shiny/' + spriteid + '.gif');
 				if (frontSize) g5row.front = frontSize;
-				if (frontSize) g5row.frontshiny = frontSizeShiny;
 				const frontSizeF = sizeObj('sprites/gen5ani/' + spriteid + '-f.gif');
-				const frontSizeFShiny = sizeObj('sprites/gen5ani-shiny/' + spriteid + '-f.gif');
 				if (frontSizeF) g5row.frontf = frontSizeF;
-				if (frontSizeF) g5row.frontfshiny = frontSizeFShiny;
 				const backSize = sizeObj('sprites/gen5ani-back/' + spriteid + '.gif');
-				const backSizeShiny = sizeObj('sprites/gen5ani-back-shiny/' + spriteid + '.gif');
 				if (backSize) g5row.back = backSize;
-				if (backSize) g5row.backshiny = backSizeShiny;
 				const backSizeF = sizeObj('sprites/gen5ani-back/' + spriteid + '-f.gif');
-				const backSizeFShiny = sizeObj('sprites/gen5ani-back-shiny/' + spriteid + '.gif');
 				if (backSizeF) g5row.backf = backSizeF;
-				if (backSizeF) g5row.backfshiny = backSizeFShiny;
 				if (g5row.front || g5row.back || !g5row.forme) {
 					g5buf += `\t${id}:` + JSON.stringify(g5row).replace(/"/g, '') + `,\n`;
 				}
