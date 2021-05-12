@@ -31,7 +31,6 @@
 type EffectState = any[] & {0: ID};
 /** [name, minTimeLeft, maxTimeLeft] */
 type WeatherState = [string, number, number];
-type EffectTable = {[effectid: string]: EffectState};
 type HPColor = 'r' | 'y' | 'g';
 
 class Pokemon implements PokemonDetails, PokemonHealth {
@@ -91,9 +90,9 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	boosts: {[stat: string]: number} = {};
 	status: StatusName | 'tox' | '' | '???' = '';
 	statusStage = 0;
-	volatiles: EffectTable = {};
-	turnstatuses: EffectTable = {};
-	movestatuses: EffectTable = {};
+	volatiles: {[effectid: string]: EffectState} = {};
+	turnstatuses: {[effectid: string]: EffectState} = {};
+	movestatuses: {[effectid: string]: EffectState} = {};
 	lastMove = '';
 
 	/** [[moveName, ppUsed]] */
@@ -1950,7 +1949,6 @@ class Battle {
 			let effect = Dex.getEffect(kwArgs.from);
 			let ofpoke = this.getPokemon(kwArgs.of) || poke;
 			poke.status = args[2] as StatusName;
-			poke.removeVolatile('yawn' as ID);
 			this.activateAbility(ofpoke || poke, effect);
 			if (effect.effectType === 'Item') {
 				ofpoke.item = effect.name;
@@ -3312,7 +3310,7 @@ class Battle {
 			const side = this.sides[siden];
 			for (let i = 0; i < side.pokemon.length; i++) {
 				const pokemon = side.pokemon[i];
-				if (pokemon.checkDetails(args[2])) {
+				if (pokemon.details !== args[2] && pokemon.checkDetails(args[2])) {
 					side.addPokemon('', '', args[2], i);
 					break;
 				}
