@@ -1526,7 +1526,7 @@ class BattleScene {
 		this.preloadImage(Dex.resourcePrefix + 'sprites/ani-back/substitute.gif');
 	}
 	rollBgm() {
-		this.setBgm(1 + this.numericId % 6);
+		this.setBgm(1 + this.numericId % 11);
 	}
 	setBgm(bgmNum: number) {
 		if (this.bgmNum === bgmNum) return;
@@ -1543,7 +1543,7 @@ class BattleScene {
 			this.bgm = BattleSound.loadBgm('audio/colosseum-miror-b.mp3', 896, 47462, this.bgm);
 			break;
 		case 1:
-			this.bgm = BattleSound.loadBgm('audio/oras-zinnia.mp3', 13143, 93553, this.bgm);
+			this.bgm = BattleSound.loadBgm('audio/oras-zinnia.mp3', 56519, 136974, this.bgm);
 			break;
 		case 2:
 			this.bgm = BattleSound.loadBgm('audio/usum-ultra-necrozma.mp3', 10370, 93414, this.bgm);
@@ -1558,6 +1558,21 @@ class BattleScene {
 			this.bgm = BattleSound.loadBgm('audio/ss-rose.mp3', 38753, 118944, this.bgm);
 			break;
 		case 6:
+			this.bgm = BattleSound.loadBgm('audio/bw-n.mp3', 59770, 146591, this.bgm);
+			break;
+		case 7:
+			this.bgm = BattleSound.loadBgm('audio/fm-birds.mp3', 97928, 253931, this.bgm);
+			break;
+		case 8:
+			this.bgm = BattleSound.loadBgm('audio/fm-urshifu.mp3', 9685, 256873, this.bgm);
+			break;
+		case 9:
+			this.bgm = BattleSound.loadBgm('audio/fm-mewtwo.mp3', 67006, 159725, this.bgm);
+			break;
+		case 10:
+			this.bgm = BattleSound.loadBgm('audio/fm-diancie.mp3', 36802, 375215, this.bgm);
+			break;
+		case 11:
 		default:
 			this.bgm = BattleSound.loadBgm('audio/fm-champion.mp3', 51201, 278313, this.bgm);
 			break;
