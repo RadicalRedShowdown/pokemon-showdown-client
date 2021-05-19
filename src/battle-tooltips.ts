@@ -1429,6 +1429,9 @@ class BattleTooltips {
 			if (value.tryWeather('Sunny Day')) value.set(50, 'Sunny Day');
 			if (value.tryWeather('Desolate Land')) value.set(50, 'Desolate Land');
 		}
+		if (pokemon.getSpecies().name === 'Dusknoir') {
+			value.itemModify(0, 'Reaper Cloth');
+		}
 		value.abilityModify(0, 'No Guard');
 		if (!value.value) return value;
 		if (move.ohko) {
