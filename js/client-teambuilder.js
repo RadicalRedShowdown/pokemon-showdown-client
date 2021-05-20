@@ -1994,9 +1994,9 @@
 
 			var generationNumber = 8;
 			if (format.substr(0, 3) === 'gen') {
-				var number = format.charAt(3);
-				if ('1' <= number && number <= '6') {
-					generationNumber = +number;
+				var number = parseInt(format.charAt(3), 10);
+				if (1 <= number && number <= 7) {
+					generationNumber = number;
 					format = format.substr(4);
 				}
 			}
@@ -3103,10 +3103,10 @@
 						}
 					}
 					if (!hasMoveBesidesTransform) minAtk = false;
-				} else if (move.category === 'Physical' &&
-						!move.damage && !move.ohko && move.id !== 'rapidspin' && move.id !== 'foulplay' && move.id !== 'endeavor' && move.id !== 'counter' && move.id !== 'bodypress') {
+				} else if (move.category === 'Physical' && !move.damage && !move.ohko &&
+					!['foulplay', 'endeavor', 'counter', 'bodypress', 'seismictoss', 'bide', 'metalburst', 'superfang'].includes(move.id) && !(this.curTeam.gen < 8 && move.id === 'rapidspin')) {
 					minAtk = false;
-				} else if (move.id === 'metronome' || move.id === 'assist' || move.id === 'copycat' || move.id === 'mefirst') {
+				} else if (['metronome', 'assist', 'copycat', 'mefirst', 'photongeyser', 'shellsidearm'].includes(move.id)) {
 					minAtk = false;
 				}
 				if (minSpe === false && moveName === 'Gyro Ball') {
