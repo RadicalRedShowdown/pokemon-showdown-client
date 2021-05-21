@@ -1300,7 +1300,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		case 'smackdown':
 			return species.types.includes('Ground');
 		case 'smartstrike':
-			return species.types.includes('Steel') && !moves.includes('cut') &&!moves.includes('ironhead');
+			return species.types.includes('Steel') && !moves.includes('cut') && !moves.includes('ironhead');
 		case 'soak':
 			return abilityid === 'unaware';
 		case 'steelwing':
