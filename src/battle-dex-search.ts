@@ -1217,8 +1217,12 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return ['technician', 'toughclaws'].includes(abilityid) && !moves.includes('bravebird');
 		case 'ancientpower':
 			return ['serenegrace', 'technician'].includes(abilityid) || !moves.includes('powergem');
+		case 'armthrust':
+			return ['skilllink', 'technician'].includes(abilityid);
 		case 'aurawheel':
 			return species.baseSpecies === 'Morpeko';
+		case 'beatup':
+			return ['skilllink', 'technician'].includes(abilityid);
 		case 'bellydrum':
 			return moves.includes('aquajet') || moves.includes('extremespeed') ||
 				['iceface', 'unburden'].includes(abilityid);
@@ -1271,18 +1275,18 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return !moves.includes('highjumpkick');
 		case 'leechlife':
 			return dex.gen > 6;
+		case 'megadrain':
+			return abilityid === 'technician';
 		case 'mysticalfire':
 			return dex.gen > 6 && !moves.includes('flamethrower');
 		case 'naturepower':
 			return dex.gen === 5;
 		case 'nightslash':
-			return !moves.includes('crunch') && !(moves.includes('knockoff') && dex.gen >= 6);
+			return ((!moves.includes('crunch') && !(moves.includes('knockoff') && dex.gen >= 6)) || abilityid === 'blademaster');
 		case 'petaldance':
 			return abilityid === 'owntempo';
 		case 'phantomforce':
 			return (!moves.includes('poltergeist') && !moves.includes('shadowclaw')) || this.formatType === 'doubles';
-		case 'poisonfang':
-			return species.types.includes('Poison') && !moves.includes('gunkshot') && !moves.includes('poisonjab');
 		case 'relicsong':
 			return species.id === 'meloetta';
 		case 'refresh':
@@ -1293,12 +1297,10 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return abilityid === 'technician';
 		case 'selfdestruct':
 			return dex.gen < 5 && !moves.includes('explosion');
-		case 'shadowpunch':
-			return abilityid === 'ironfist';
 		case 'smackdown':
 			return species.types.includes('Ground');
 		case 'smartstrike':
-			return species.types.includes('Steel') && !moves.includes('ironhead');
+			return species.types.includes('Steel') && !moves.includes('cut') &&!moves.includes('ironhead');
 		case 'soak':
 			return abilityid === 'unaware';
 		case 'steelwing':
