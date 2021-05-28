@@ -709,7 +709,7 @@ class BattleTooltips {
 			if (!move.flags.protect && !['self', 'allySide'].includes(move.target)) {
 				text += `<p class="movetag">Not blocked by Protect <small>(and Detect, King's Shield, Spiky Shield)</small></p>`;
 			}
-			if (move.flags.authentic) {
+			if (move.flags.authentic && !(move.flags.sound && this.battle.gen < 6)) {
 				text += `<p class="movetag">Bypasses Substitute <small>(but does not break it)</small></p>`;
 			}
 			if (!move.flags.reflectable && !['self', 'allySide'].includes(move.target) && move.category === 'Status') {
@@ -722,7 +722,7 @@ class BattleTooltips {
 			if (move.flags.sound) {
 				text += `<p class="movetag">&#x2713; Sound <small>(doesn't affect Soundproof pokemon)</small></p>`;
 			}
-			if (move.flags.powder) {
+			if (move.flags.powder && this.battle.gen > 5) {
 				text += `<p class="movetag">&#x2713; Powder <small>(doesn't affect Grass, Overcoat, Safety Goggles)</small></p>`;
 			}
 			if (move.flags.punch && ability === 'ironfist') {
@@ -988,8 +988,8 @@ class BattleTooltips {
 		let ability = toID(serverPokemon.ability || pokemon.ability || serverPokemon.baseAbility);
 		let ngasActive = false;
 		for (const side of this.battle.sides) {
-			for (const activePokemon of side.active) {
-				if (activePokemon && toID(activePokemon.ability) === 'neutralizinggas') {
+			for (const active of side.active) {
+				if (active && !active.fainted && toID(active.ability) === 'neutralizinggas' && !active.volatiles['gastroacid']) {
 					ngasActive = true;
 					break;
 				}
@@ -1020,7 +1020,14 @@ class BattleTooltips {
 
 		let item = toID(serverPokemon.item);
 		let speedHalvingEVItems = ['machobrace', 'poweranklet', 'powerband', 'powerbelt', 'powerbracer', 'powerlens', 'powerweight'];
-		if (ability === 'klutz' && !speedHalvingEVItems.includes(item)) item = '' as ID;
+		if (
+			(ability === 'klutz' && !speedHalvingEVItems.includes(item)) ||
+			this.battle.hasPseudoWeather('Magic Room') ||
+			clientPokemon?.volatiles['embargo']
+		) {
+			item = '' as ID;
+		}
+
 		const speciesForme = clientPokemon ? clientPokemon.getSpeciesForme() : serverPokemon.speciesForme;
 		let species = Dex.species.get(speciesForme).baseSpecies;
 
@@ -1088,7 +1095,7 @@ class BattleTooltips {
 			stats.spa = Math.floor(stats.spa * 1.5);
 		}
 		if (weather) {
-			if (this.battle.gen >= 4 && this.pokemonHasType(serverPokemon, 'Rock') && weather === 'sandstorm') {
+			if (this.battle.gen >= 4 && this.pokemonHasType(pokemon, 'Rock') && weather === 'sandstorm') {
 				stats.spd = Math.floor(stats.spd * 1.5);
 			}
 			if (ability === 'sandrush' && weather === 'sandstorm') {
@@ -1290,6 +1297,9 @@ class BattleTooltips {
 	 * Calculates possible Speed stat range of an opponent
 	 */
 	getSpeedRange(pokemon: Pokemon): [number, number] {
+		if (pokemon.volatiles.transform) {
+			pokemon = pokemon.volatiles.transform[1];
+		}
 		let level = pokemon.level;
 		let baseSpe = pokemon.getSpecies().baseStats['spe'];
 		let tier = this.battle.tier;
@@ -1416,6 +1426,7 @@ class BattleTooltips {
 		value.reset(move.accuracy === true ? 0 : move.accuracy, true);
 
 		let pokemon = value.pokemon!;
+		// Sure-hit accuracy
 		if (move.id === 'toxic' && this.battle.gen >= 6 && this.pokemonHasType(pokemon, 'Poison')) {
 			value.set(0, "Poison type");
 			return value;
@@ -1426,21 +1437,21 @@ class BattleTooltips {
 		if (move.id === 'hurricane' || move.id === 'thunder') {
 			value.weatherModify(0, 'Rain Dance');
 			value.weatherModify(0, 'Primordial Sea');
-			if (value.tryWeather('Sunny Day')) value.set(50, 'Sunny Day');
-			if (value.tryWeather('Desolate Land')) value.set(50, 'Desolate Land');
 		}
 		if (pokemon.getSpecies().name === 'Dusknoir') {
 			value.itemModify(0, 'Reaper Cloth');
 		}
 		value.abilityModify(0, 'No Guard');
 		if (!value.value) return value;
+
+		// OHKO moves don't use standard accuracy / evasion modifiers
 		if (move.ohko) {
 			if (this.battle.gen === 1) {
 				value.set(value.value, `fails if target's Speed is higher`);
 				return value;
 			}
-			if (move.id === 'sheercold' && this.battle.gen >= 7) {
-				if (!this.pokemonHasType(pokemon, 'Ice')) value.set(20, 'not Ice-type');
+			if (move.id === 'sheercold' && this.battle.gen >= 7 && !this.pokemonHasType(pokemon, 'Ice')) {
+				value.set(20, 'not Ice-type');
 			}
 			if (target) {
 				if (pokemon.level < target.level) {
@@ -1455,27 +1466,70 @@ class BattleTooltips {
 			}
 			return value;
 		}
-		if (pokemon?.boosts.accuracy) {
-			if (pokemon.boosts.accuracy > 0) {
-				value.modify((pokemon.boosts.accuracy + 3) / 3);
-			} else {
-				value.modify(3 / (3 - pokemon.boosts.accuracy));
-			}
+
+		// Accuracy modifiers start
+
+		let accuracyModifiers = [];
+		if (this.battle.hasPseudoWeather('Gravity')) {
+			accuracyModifiers.push(6840);
+			value.modify(5 / 3, "Gravity");
 		}
-		if (move.category === 'Physical') {
-			value.abilityModify(0.8, "Hustle");
-		}
-		value.abilityModify(1.3, "Compound Eyes");
+
 		for (const active of pokemon.side.active) {
 			if (!active || active.fainted) continue;
-			let ability = this.getAllyAbility(active);
+			const ability = this.getAllyAbility(active);
 			if (ability === 'Victory Star') {
+				accuracyModifiers.push(4506);
 				value.modify(1.1, "Victory Star");
 			}
 		}
-		value.itemModify(1.1, "Wide Lens");
-		if (this.battle.hasPseudoWeather('Gravity')) {
-			value.modify(5 / 3, "Gravity");
+
+		if (value.tryAbility('Hustle') && move.category === 'Physical') {
+			accuracyModifiers.push(3277);
+			value.abilityModify(0.8, "Hustle");
+		} else if (value.tryAbility('Compound Eyes')) {
+			accuracyModifiers.push(5325);
+			value.abilityModify(1.3, "Compound Eyes");
+		}
+
+		if (value.tryItem('Wide Lens')) {
+			accuracyModifiers.push(4505);
+			value.itemModify(1.1, "Wide Lens");
+		}
+
+		// Chaining modifiers
+		let chain = 4096;
+		for (const mod of accuracyModifiers) {
+			if (mod !== 4096) {
+				chain = (chain * mod + 2048) >> 12;
+			}
+		}
+
+		// Applying modifiers
+		value.set(move.accuracy as number);
+
+		if (move.id === 'hurricane' || move.id === 'thunder') {
+			if (value.tryWeather('Sunny Day')) value.set(50, 'Sunny Day');
+			if (value.tryWeather('Desolate Land')) value.set(50, 'Desolate Land');
+		}
+
+		// Chained modifiers round down on 0.5
+		let accuracyAfterChain = (value.value * chain) / 4096;
+		accuracyAfterChain = accuracyAfterChain % 1 > 0.5 ? Math.ceil(accuracyAfterChain) : Math.floor(accuracyAfterChain);
+		value.set(accuracyAfterChain);
+
+		// Unlike for Atk, Def, etc. accuracy and evasion boosts are applied after modifiers
+		if (pokemon?.boosts.accuracy) {
+			if (pokemon.boosts.accuracy > 0) {
+				value.set(Math.floor(value.value * (pokemon.boosts.accuracy + 3) / 3));
+			} else {
+				value.set(Math.floor(value.value * 3 / (3 - pokemon.boosts.accuracy)));
+			}
+		}
+
+		// 1/256 glitch
+		if (this.battle.gen === 1 && !toID(this.battle.tier).includes('stadium')) {
+			value.set((Math.floor(value.value * 255 / 100) / 256) * 100);
 		}
 		return value;
 	}
@@ -1710,7 +1764,10 @@ class BattleTooltips {
 		const noTypeOverride = [
 			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball',
 		];
-		if (move.category !== 'Status' && !noTypeOverride.includes(move.id) && !move.isZ && !move.isMax && !move.id.startsWith('hiddenpower')) {
+		if (
+			move.category !== 'Status' && !noTypeOverride.includes(move.id) && !move.isZ && !move.isMax &&
+			!move.id.startsWith('hiddenpower')
+		) {
 			if (move.type === 'Normal') {
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Aerilate");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Galvanize");
@@ -1786,7 +1843,9 @@ class BattleTooltips {
 			if (target ? target.isGrounded() : true) {
 				value.modify(0.5, 'Misty Terrain + grounded target');
 			}
-		} else if (this.battle.hasPseudoWeather('Grassy Terrain') && ['earthquake', 'bulldoze', 'magnitude'].includes(move.id)) {
+		} else if (
+			this.battle.hasPseudoWeather('Grassy Terrain') && ['earthquake', 'bulldoze', 'magnitude'].includes(move.id)
+		) {
 			if (target ? target.isGrounded() : true) {
 				value.modify(0.5, 'Grassy Terrain + grounded target');
 			}

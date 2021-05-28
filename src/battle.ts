@@ -1315,6 +1315,35 @@ class Battle {
 		this.weather = weather;
 		this.scene.updateWeather();
 	}
+	swapSideConditions() {
+		const sideConditions = [
+			'mist', 'lightscreen', 'reflect', 'spikes', 'safeguard', 'tailwind', 'toxicspikes', 'stealthrock', 'waterpledge', 'firepledge', 'grasspledge', 'stickyweb', 'auroraveil', 'gmaxsteelsurge', 'gmaxcannonade', 'gmaxvinelash', 'gmaxwildfire',
+		];
+		if (this.gameType === 'freeforall') {
+			// TODO: Add FFA support
+			return;
+		} else {
+			let side1 = this.sides[0];
+			let side2 = this.sides[1];
+			for (const id of sideConditions) {
+				if (side1.sideConditions[id] && side2.sideConditions[id]) {
+					[side1.sideConditions[id], side2.sideConditions[id]] = [
+						side2.sideConditions[id], side1.sideConditions[id],
+					];
+					this.scene.addSideCondition(side1.n, id as ID);
+					this.scene.addSideCondition(side2.n, id as ID);
+				} else if (side1.sideConditions[id] && !side2.sideConditions[id]) {
+					side2.sideConditions[id] = side1.sideConditions[id];
+					this.scene.addSideCondition(side2.n, id as ID);
+					side1.removeSideCondition(id);
+				} else if (side2.sideConditions[id] && !side1.sideConditions[id]) {
+					side1.sideConditions[id] = side2.sideConditions[id];
+					this.scene.addSideCondition(side1.n, id as ID);
+					side2.removeSideCondition(id);
+				}
+			}
+		}
+	}
 	updateTurnCounters() {
 		for (const pWeather of this.pseudoWeather) {
 			if (pWeather[1]) pWeather[1]--;
@@ -1366,14 +1395,42 @@ class Battle {
 				}
 			}
 			let pp = 1;
-			if (move.target === "all") {
-				for (const active of pokemon.side.foe.active) {
-					if (active && toID(active.ability) === 'pressure') {
+			let ngasActive = false;
+			for (const side of this.sides) {
+				for (const active of side.active) {
+					if (active && !active.fainted && toID(active.ability) === 'neutralizinggas' && !active.volatiles['gastroacid']) {
+						ngasActive = true;
+						break;
+					}
+				}
+			}
+			// Sticky Web is never affected by pressure
+			if (!ngasActive && move.id !== 'stickyweb') {
+				const foeTargets = [];
+
+				if (
+					!target && this.gameType === 'singles' &&
+					!['self', 'allies', 'allySide', 'adjacentAlly', 'adjacentAllyOrSelf'].includes(move.target)
+				) {
+					// Hardcode for moves without a target in singles
+					foeTargets.push(pokemon.side.foe.active[0]);
+				} else if (['all', 'allAdjacent', 'allAdjacentFoes', 'foeSide'].includes(move.target)) {
+					// We loop through all sides here for FFA
+					for (const side of this.sides) {
+						if (side === pokemon.side || side === pokemon.side.ally) continue;
+						for (const active of side.active) {
+							foeTargets.push(active);
+						}
+					}
+				} else if (target && target.side !== pokemon.side) {
+					foeTargets.push(target);
+				}
+
+				for (const foe of foeTargets) {
+					if (foe && !foe.fainted && toID(foe.ability) === 'pressure' && !foe.volatiles['gastroacid']) {
 						pp += 1;
 					}
 				}
-			} else if (target && target.side !== pokemon.side && toID(target.ability) === 'pressure') {
-				pp += 1;
 			}
 			if (move.id === 'strengthsap') {
 				pp += 1;
@@ -2789,6 +2846,12 @@ class Battle {
 			// let from = Dex.getEffect(kwArgs.from);
 			// let ofpoke = this.getPokemon(kwArgs.of);
 			side.removeSideCondition(effect.name);
+			this.log(args, kwArgs);
+			break;
+		}
+		case '-swapsideconditions': {
+			this.swapSideConditions();
+			this.scene.updateWeather();
 			this.log(args, kwArgs);
 			break;
 		}
