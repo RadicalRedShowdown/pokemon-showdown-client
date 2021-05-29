@@ -1002,6 +1002,60 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		}
 	}
 
+	//
+	// For dex site
+	//
+	
+	BattleTeambuilderTable['gen8'] = {};
+	const gen8Data = Dex.mod('gen8').data;
+	const overrideSpeciesData = {};
+	BattleTeambuilderTable['gen8'].overrideSpeciesData = overrideSpeciesData;
+	const overrideSpeciesKeys = ['abilities', 'baseStats', 'types'];
+	for (const id in gen8Data.Pokedex) {
+		const gen8Entry = gen8Data.Pokedex[id];
+		const rrEntry = Dex.data.Pokedex[id];
+		for (const key of overrideSpeciesKeys) {
+			if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
+				if (!overrideSpeciesData[id]) overrideSpeciesData[id] = {};
+				overrideSpeciesData[id][key] = gen8Entry[key];
+			}
+		}
+	}
+
+	const overrideMoveData = {};
+	BattleTeambuilderTable['gen8'].overrideMoveData = overrideMoveData;
+	const overrideMoveKeys = ['acgen8acy', 'basePower', 'category', 'desc', 'pp', 'shortDesc', 'type'];
+	for (const id in gen8Data.Moves) {
+		const gen8Entry = Dex.mod('gen8').moves.get(id);
+		const rrEntry = Dex.moves.get(id);
+		for (const key of overrideMoveKeys) {
+			if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
+				if (!overrideMoveData[id]) overrideMoveData[id] = {};
+				overrideMoveData[id][key] = gen8Entry[key];
+			}
+		}
+	}
+
+	const overrideItemDesc = {};
+	BattleTeambuilderTable['gen8'].overrideItemDesc = overrideItemDesc;
+	for (const id in gen8Data.Items) {
+		const gen8Entry = Dex.mod('gen8').items.get(id);
+		const rrEntry = Dex.items.get(id);
+		if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
+			overrideItemDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
+		}
+	}
+
+	const overrideAbilityDesc = {};
+	BattleTeambuilderTable['gen8'].overrideAbilityDesc = overrideAbilityDesc;
+	for (const id in gen8Data.Abilities) {
+		const gen8Entry = Dex.mod('gen8').abilities.get(id);
+		const rrEntry = Dex.abilities.get(id);
+		if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
+			overrideAbilityDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
+		}
+	}
+
 	buf += `exports.BattleTeambuilderTable = JSON.parse('${JSON.stringify(BattleTeambuilderTable).replace(/['\\]/g, "\\$&")}');\n\n`;
 
 	fs.writeFileSync('data/teambuilder-tables.js', buf);
