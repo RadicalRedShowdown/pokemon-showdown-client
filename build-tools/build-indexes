@@ -1006,10 +1006,10 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	// For dex site
 	//
 	
-	BattleTeambuilderTable['gen8'] = {};
+	BattleTeambuilderTable['gen8old'] = {};
 	const gen8Data = Dex.mod('gen8').data;
 	const overrideSpeciesData = {};
-	BattleTeambuilderTable['gen8'].overrideSpeciesData = overrideSpeciesData;
+	BattleTeambuilderTable['gen8old'].overrideSpeciesData = overrideSpeciesData;
 	const overrideSpeciesKeys = ['abilities', 'baseStats', 'types'];
 	for (const id in gen8Data.Pokedex) {
 		const gen8Entry = gen8Data.Pokedex[id];
@@ -1023,7 +1023,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	}
 
 	const overrideMoveData = {};
-	BattleTeambuilderTable['gen8'].overrideMoveData = overrideMoveData;
+	BattleTeambuilderTable['gen8old'].overrideMoveData = overrideMoveData;
 	const overrideMoveKeys = ['acgen8acy', 'basePower', 'category', 'desc', 'pp', 'shortDesc', 'type'];
 	for (const id in gen8Data.Moves) {
 		const gen8Entry = Dex.mod('gen8').moves.get(id);
@@ -1037,7 +1037,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	}
 
 	const overrideItemDesc = {};
-	BattleTeambuilderTable['gen8'].overrideItemDesc = overrideItemDesc;
+	BattleTeambuilderTable['gen8old'].overrideItemDesc = overrideItemDesc;
 	for (const id in gen8Data.Items) {
 		const gen8Entry = Dex.mod('gen8').items.get(id);
 		const rrEntry = Dex.items.get(id);
@@ -1047,7 +1047,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	}
 
 	const overrideAbilityDesc = {};
-	BattleTeambuilderTable['gen8'].overrideAbilityDesc = overrideAbilityDesc;
+	BattleTeambuilderTable['gen8old'].overrideAbilityDesc = overrideAbilityDesc;
 	for (const id in gen8Data.Abilities) {
 		const gen8Entry = Dex.mod('gen8').abilities.get(id);
 		const rrEntry = Dex.abilities.get(id);
