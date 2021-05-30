@@ -1063,6 +1063,12 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 
 console.log("DONE");
 
+function sortObj(obj) {
+	let entries = Object.entries(obj);
+	entries = entries.sort((a, b) => a[0].localeCompare(b[0]));
+	return Object.fromEntries(entries);
+}
+
 /*********************************************************
  * Build pokedex.js
  *********************************************************/
@@ -1070,8 +1076,17 @@ console.log("DONE");
 process.stdout.write("Building `data/pokedex.js`... ");
 
 {
-	const Pokedex = Dex.data.Pokedex;
-	for (const id in Pokedex) {
+	let Pokedex = Dex.data.Pokedex;
+	let entries = Object.entries(sortObj(Pokedex));
+	entries = entries.sort((a, b) => {
+		if (a[1].num > 0 && b[1].num > 0) {
+			return a[1].num - b[1].num
+		} else {
+			return b[1].num - a[1].num
+		}
+	});
+	Pokedex = Object.fromEntries(entries);
+	for (const id in Pokedex) {	
 		const entry = Pokedex[id];
 		if (Dex.data.FormatsData[id]) {
 			// console.log('formatsentry:' + id);
@@ -1095,7 +1110,7 @@ console.log("DONE");
 process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.js`...");
 
 {
-	const Moves = Dex.data.Moves;
+	const Moves = sortObj(Dex.data.Moves);
 	for (const id in Moves) {
 		const move = Dex.moves.get(Moves[id].name);
 		if (move.desc) Moves[id].desc = move.desc;
@@ -1111,7 +1126,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
  *********************************************************/
 
 {
-	const Items = Dex.data.Items;
+	const Items = sortObj(Dex.data.Items);
 	for (const id in Items) {
 		const item = Dex.items.get(Items[id].name);
 		if (item.desc) Items[id].desc = item.desc;
@@ -1126,7 +1141,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
  *********************************************************/
 
 {
-	const Abilities = Dex.data.Abilities;
+	const Abilities = sortObj(Dex.data.Abilities);
 	for (const id in Abilities) {
 		const ability = Dex.abilities.get(Abilities[id].name);
 		if (ability.desc) Abilities[id].desc = ability.desc;
@@ -1161,7 +1176,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
  *********************************************************/
 
 {
-	const FormatsData = Dex.data.FormatsData;
+	const FormatsData = sortObj(Dex.data.FormatsData);
 	const buf = 'exports.BattleFormatsData = ' + es3stringify(FormatsData) + ';';
 	fs.writeFileSync('data/formats-data.js', buf);
 }
@@ -1181,7 +1196,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
  *********************************************************/
 
 {
-	const Learnsets = Dex.data.Learnsets;
+	const Learnsets = sortObj(Dex.data.Learnsets);
 	const buf = 'exports.BattleLearnsets = ' + es3stringify(Learnsets) + ';';
 	fs.writeFileSync('data/learnsets.js', buf);
 }
