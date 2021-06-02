@@ -1373,12 +1373,7 @@ class Battle {
 		}
 		this.scene.updateStatbar(pokemon);
 		if (fromeffect.id === 'sleeptalk') {
-			let pp = 0;
-			if (move.id === 'strengthsap') {
-				pp += 1;
-			}
-			console.log(pp);
-			pokemon.rememberMove(move.name, pp);
+			pokemon.rememberMove(move.name, 0);
 		} else if (!fromeffect.id || fromeffect.id === 'pursuit') {
 			let moveName = move.name;
 			if (move.isZ) {
@@ -1431,9 +1426,6 @@ class Battle {
 						pp += 1;
 					}
 				}
-			}
-			if (move.id === 'strengthsap') {
-				pp += 1;
 			}
 			pokemon.rememberMove(moveName, pp);
 		}
@@ -2309,7 +2301,8 @@ class Battle {
 			let species = this.dex.species.get(newSpeciesForme);
 
 			poke.speciesForme = newSpeciesForme;
-			poke.ability = poke.baseAbility = (species.abilities ? species.abilities['0'] : '');
+			const abilities = species.abilities;
+			poke.ability = poke.baseAbility = (abilities && Object.keys(abilities).length === 1 ? abilities['0'] : '');
 
 			poke.details = args[2];
 			poke.searchid = args[1].substr(0, 2) + args[1].substr(3) + '|' + args[2];
@@ -3190,6 +3183,7 @@ class Battle {
 				this.messageFadeTime = 40;
 				this.isBlitz = true;
 			}
+			if (this.tier.includes('RRDL')) this.dex = Dex.mod('rr22b' as ID);
 			this.log(args);
 			break;
 		}
