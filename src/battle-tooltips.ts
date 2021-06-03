@@ -1490,6 +1490,9 @@ class BattleTooltips {
 		} else if (value.tryAbility('Compound Eyes')) {
 			accuracyModifiers.push(5325);
 			value.abilityModify(1.3, "Compound Eyes");
+		} else if (value.tryAbility('Illuminate')) {
+			accuracyModifiers.push(4915);
+			value.abilityModify(1.2, "Illuminate");
 		}
 
 		if (value.tryItem('Wide Lens')) {
