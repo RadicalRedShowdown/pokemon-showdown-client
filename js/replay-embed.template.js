@@ -12,28 +12,28 @@ function requireScript(url) {
 	document.head.appendChild(scriptEl);
 }
 
-linkStyle('http://radicalredshowdown.us.to/style/font-awesome.css?');
-linkStyle('http://radicalredshowdown.us.to/style/battle.css?a7');
-linkStyle('http://radicalredshowdown.us.to/style/replay.css?a7');
-linkStyle('http://radicalredshowdown.us.to/style/utilichart.css?a7');
+linkStyle('https://play.radicalred.net/style/font-awesome.css?');
+linkStyle('https://play.radicalred.net/style/battle.css?a7');
+linkStyle('https://play.radicalred.net/style/replay.css?a7');
+linkStyle('https://play.radicalred.net/style/utilichart.css?a7');
 
-requireScript('http://radicalredshowdown.us.to/js/lib/ps-polyfill.js');
-requireScript('http://radicalredshowdown.us.to/config/config.js?a7');
-requireScript('http://radicalredshowdown.us.to/js/lib/jquery-1.11.0.min.js');
-requireScript('http://radicalredshowdown.us.to/js/lib/lodash.compat.js');
-requireScript('http://radicalredshowdown.us.to/js/lib/html-sanitizer-minified.js');
-requireScript('http://radicalredshowdown.us.to/js/battle-sound.js');
-requireScript('http://radicalredshowdown.us.to/js/battledata.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/pokedex-mini.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/pokedex-mini-bw.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/graphics.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/pokedex.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/moves.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/abilities.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/items.js?a7');
-requireScript('http://radicalredshowdown.us.to/data/teambuilder-tables.js?a7');
-requireScript('http://radicalredshowdown.us.to/js/battle-tooltips.js?a7');
-requireScript('http://radicalredshowdown.us.to/js/battle.js?a7');
+requireScript('https://play.radicalred.net/js/lib/ps-polyfill.js');
+requireScript('https://play.radicalred.net/config/config.js?a7');
+requireScript('https://play.radicalred.net/js/lib/jquery-1.11.0.min.js');
+requireScript('https://play.radicalred.net/js/lib/lodash.compat.js');
+requireScript('https://play.radicalred.net/js/lib/html-sanitizer-minified.js');
+requireScript('https://play.radicalred.net/js/battle-sound.js');
+requireScript('https://play.radicalred.net/js/battledata.js?a7');
+requireScript('https://play.radicalred.net/data/pokedex-mini.js?a7');
+requireScript('https://play.radicalred.net/data/pokedex-mini-bw.js?a7');
+requireScript('https://play.radicalred.net/data/graphics.js?a7');
+requireScript('https://play.radicalred.net/data/pokedex.js?a7');
+requireScript('https://play.radicalred.net/data/moves.js?a7');
+requireScript('https://play.radicalred.net/data/abilities.js?a7');
+requireScript('https://play.radicalred.net/data/items.js?a7');
+requireScript('https://play.radicalred.net/data/teambuilder-tables.js?a7');
+requireScript('https://play.radicalred.net/js/battle-tooltips.js?a7');
+requireScript('https://play.radicalred.net/js/battle.js?a7');
 
 var Replays = {
 	battle: null,
