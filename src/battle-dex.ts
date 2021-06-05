@@ -219,7 +219,7 @@ const Dex = new class implements ModdedDex {
 		}
 		if (avatar.includes('.')) {
 			// custom avatar served by the server
-			return 'http://164.90.254.251:8000/avatars/' + encodeURIComponent(avatar).replace(/\%3F/g, '?');
+			return 'https://sim.radicalred.net:8443/avatars/' + encodeURIComponent(avatar).replace(/\%3F/g, '?');
 		}
 		return Dex.resourcePrefix + 'sprites/trainers/' + Dex.sanitizeName(avatar || 'unknown') + '.png';
 	}
