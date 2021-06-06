@@ -423,7 +423,7 @@ function toId() {
 				Storage.whenPrefsLoaded(function () {
 					if (!Config.server.registered) {
 						app.send('/autojoin');
-						Backbone.history.start({pushState: !Config.testclient});
+						Backbone.history.start({pushState: true});
 						return;
 					}
 					// Support legacy tournament setting and migrate to new pref
@@ -454,7 +454,7 @@ function toId() {
 					var settings = Dex.prefs('serversettings') || {};
 					if (Object.keys(settings).length) app.user.set('settings', settings);
 					// HTML5 history throws exceptions when running on file://
-					Backbone.history.start({pushState: !Config.testclient});
+					Backbone.history.start({pushState: true});
 					app.ignore = app.loadIgnore();
 				});
 			}
@@ -804,7 +804,7 @@ function toId() {
 			};
 		},
 		dispatchFragment: function (fragment) {
-			if (!Config.testclient && location.search && window.history) {
+			if (location.search && window.history) {
 				history.replaceState(null, null, location.pathname);
 			}
 			this.fragment = fragment = toRoomid(fragment || '');
