@@ -1758,6 +1758,7 @@ class BattleTooltips {
 		}
 		if (move.flags['sound']) {
 			value.abilityModify(1.3, "Punk Rock");
+			value.abilityModify(1.2, "Liquid Voice");
 		}
 		if (target) {
 			if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
