@@ -1353,6 +1353,9 @@ class Species implements Effect {
 		hp: number, atk: number, def: number, spa: number, spd: number, spe: number,
 	}>;
 	readonly weightkg: number;
+	readonly items: Readonly<{
+		5: string, 50: string,
+	}>;
 
 	// flavor data
 	readonly heightm: number;
@@ -1403,6 +1406,7 @@ class Species implements Effect {
 		this.abilities = data.abilities || {0: "No Ability"};
 		this.baseStats = data.baseStats || {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 		this.weightkg = data.weightkg || 0;
+		this.items = data.items || {5: "None", 50: "None"};
 
 		this.heightm = data.heightm || 0;
 		this.gender = data.gender || '';
