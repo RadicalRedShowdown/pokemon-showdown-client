@@ -2026,9 +2026,15 @@ class BattleTooltips {
 				const species = this.battle.dex.species.get(speciesForme);
 				if (species.exists && species.abilities) {
 					abilityData.possibilities = [species.abilities['0']];
-					if (species.abilities['1']) abilityData.possibilities.push(species.abilities['1']);
-					if (species.abilities['H']) abilityData.possibilities.push(species.abilities['H']);
-					if (species.abilities['S']) abilityData.possibilities.push(species.abilities['S']);
+					if (species.abilities['1'] && !abilityData.possibilities.includes(species.abilities['1'])) {
+						abilityData.possibilities.push(species.abilities['1']);
+					}
+					if (species.abilities['H'] && !abilityData.possibilities.includes(species.abilities['H'])) {
+						abilityData.possibilities.push(species.abilities['H']);
+					}
+					if (species.abilities['S'] && !abilityData.possibilities.includes(species.abilities['S'])) {
+						abilityData.possibilities.push(species.abilities['S']);
+					}
 				}
 			}
 		}
