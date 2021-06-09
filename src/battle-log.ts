@@ -1029,7 +1029,7 @@ class BattleLog {
 		buf += '<script type="text/plain" class="battle-log-data">' + battle.stepQueue.join('\n').replace(/\//g, '\\/') + '</script>\n'; // lgtm [js/incomplete-sanitization]
 		buf += '</div>\n';
 		buf += '<script>\n';
-		buf += `let daily = Math.floor(Date.now()/1000/60/60/24);document.write('<script src="http://${Config.routes.client}/js/replay-embed.js?version'+daily+'"></'+'script>');\n`;
+		buf += `let daily = Math.floor(Date.now()/1000/60/60/24);document.write('<script src="https://${Config.routes.client}/js/replay-embed.js?version'+daily+'"></'+'script>');\n`;
 		buf += '</script>\n';
 		return buf;
 	}
