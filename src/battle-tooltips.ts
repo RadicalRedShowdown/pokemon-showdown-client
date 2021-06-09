@@ -1108,8 +1108,6 @@ class BattleTooltips {
 				if (weather === 'sunnyday' || weather === 'desolateland') {
 					if (ability === 'solarpower') {
 						stats.spa = Math.floor(stats.spa * 1.5);
-						stats.def = Math.floor(stats.def * 1.33);
-						stats.spd = Math.floor(stats.spd * 1.33);
 					}
 					if (ability === 'flowergift' && (species === 'Cherrim' || this.battle.gen <= 4)) {
 						stats.atk = Math.floor(stats.atk * 1.5);
@@ -1672,6 +1670,23 @@ class BattleTooltips {
 			else if (maxRatio >= 2) max = 80;
 			else if (maxRatio >= 1) max = 60;
 			else max = 40;
+
+			value.setRange(min, max);
+		}
+		if (move.id === 'sonicslash' && target) {
+			let [minSpe, maxSpe] = this.getSpeedRange(target);
+			let minRatio = (modifiedStats.spe / maxSpe);
+			let maxRatio = (modifiedStats.spe / minSpe);
+			let min;
+			let max;
+
+			if (minRatio >= 3) min = 140;
+			else if (minRatio >= 2) min = 120;
+			else min = 80;
+
+			if (maxRatio >= 3) max = 140;
+			else if (maxRatio >= 2) max = 120;
+			else max = 80;
 
 			value.setRange(min, max);
 		}
