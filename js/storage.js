@@ -325,6 +325,8 @@ Storage.whenPrefsLoaded(updatePrefs);
 
 Storage.initPrefs = function () {
 	Storage.loadTeams();
+	return this.initTestClient();
+	/*
 	if (Config.testclient) {
 		return this.initTestClient();
 	} else if (location.protocol + '//' + location.hostname === Storage.origin) {
@@ -370,6 +372,7 @@ Storage.initPrefs = function () {
 			}
 		}, 2000);
 	}
+	*/
 };
 
 Storage.crossOriginFrame = null;

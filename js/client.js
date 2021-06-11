@@ -216,10 +216,7 @@ function toId() {
 		 * domain in order to have access to the correct cookies.
 		 */
 		getActionPHP: function () {
-			var ret = '/~~' + Config.server.id + '/action.php';
-			if (Config.testclient) {
-				ret = 'https://play.pokemonshowdown.com' + ret;
-			}
+			var ret = 'https://play.pokemonshowdown.com/~~' + Config.server.id + '/action.php';
 			return (this.getActionPHP = function () {
 				return ret;
 			})();
@@ -423,7 +420,7 @@ function toId() {
 				Storage.whenPrefsLoaded(function () {
 					if (!Config.server.registered) {
 						app.send('/autojoin');
-						Backbone.history.start({pushState: true});
+						Backbone.history.start({pushState: !Config.testclient});
 						return;
 					}
 					// Support legacy tournament setting and migrate to new pref
@@ -454,7 +451,7 @@ function toId() {
 					var settings = Dex.prefs('serversettings') || {};
 					if (Object.keys(settings).length) app.user.set('settings', settings);
 					// HTML5 history throws exceptions when running on file://
-					Backbone.history.start({pushState: true});
+					Backbone.history.start({pushState: !Config.testclient});
 					app.ignore = app.loadIgnore();
 				});
 			}
@@ -804,7 +801,7 @@ function toId() {
 			};
 		},
 		dispatchFragment: function (fragment) {
-			if (location.search && window.history) {
+			if (!Config.testclient && location.search && window.history) {
 				history.replaceState(null, null, location.pathname);
 			}
 			this.fragment = fragment = toRoomid(fragment || '');
