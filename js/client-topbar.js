@@ -686,9 +686,20 @@
 			buf += '<p>Choose an avatar or <button name="close">Cancel</button></p>';
 
 			buf += '<div class="avatarlist">';
-			for (var i = 1; i <= 293; i++) {
-				var offset = '-' + (((i - 1) % 16) * 80 + 1) + 'px -' + (Math.floor((i - 1) / 16) * 80 + 1) + 'px';
-				buf += '<button name="setAvatar" value="' + i + '" style="background-position:' + offset + '"' + (i === cur ? ' class="cur"' : '') + ' title="/avatar ' + i + '"></button>';
+			var avatarList = [
+				'brendan', 'gary1', 'gary2', 'gary3', 'may', 'arianaarcher', 'brock', 'giovanni', 'misty', 'surge', 'erika', 'sabrina', 'koga', 'absol',
+				'acetrainer_centi', 'acetrainer_sandaconda', 'alcremie', 'allister_mimikyu', 'beauty_appletun', 'bede_gapidash', 'biker_arbok', 'blackbelt_urshifur',
+				'blackbelt_urshifus', 'blaine', 'boltund', 'breeder_snorlax', 'bruno1', 'bruno2', 'bugcatcher_butterfree', 'bugsy', 'chuck', 'cinderace', 'clair', 'coalossal',
+				'copperajah', 'delphox', 'electrode', 'falkner', 'farfectchd', 'flint_infernape', 'flygon', 'grimmsley', 'hop_dubwool', 'jasmine', 'jessie',
+				'jojofan', 'kingler', 'klara_glowking', 'kukui_moltresg', 'lance', 'leon_dragapult', 'lorelei', 'may_empoleon', 'morty', 'melony_galarzen', 'ingo_chandelure',
+				'emmet_eelektross', 'mrmime', 'mudkipz', 'mudsdale', 'nursejoy', 'oleana_salazzle', 'peony_calyrex', 'pryce', 'rose_escavalier', 'roserade',
+				'sabrina_mismagius', 'scientist_electivire', 'shielbert_zamazenta', 'sonia_yamper', 'sordward_zacian', 'soup', 'steven_celesteela', 'swimmer_floatzel',
+				'swimmer_lapras', 'veteran_darkrai', 'whitney', 'zinnia', 'zinnia2', 'zinnia3',
+			];
+			for (var i = 0; i < avatarList.length; i++) {
+				var offset = '-' + ((i % 16) * 80 + 1) + 'px -' + (Math.floor(i / 16) * 80 + 1) + 'px';
+				var avatar = 'rr-' + avatarList[i];
+				buf += '<button name="setAvatar" value="' + avatar + '" style="background-position:' + offset + '"' + (avatar === cur ? ' class="cur"' : '') + ' title="/avatar ' + avatar + '"></button>';
 			}
 			buf += '</div><div style="clear:left"></div>';
 
