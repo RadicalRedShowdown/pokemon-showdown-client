@@ -688,13 +688,13 @@
 			buf += '<div class="avatarlist">';
 			var avatarList = [
 				'brendan', 'gary1', 'gary2', 'gary3', 'may', 'arianaarcher', 'brock', 'giovanni', 'misty', 'surge', 'erika', 'sabrina', 'koga', 'absol',
-				'acetrainer_centi', 'acetrainer_sandaconda', 'alcremie', 'allister_mimikyu', 'beauty_appletun', 'bede_gapidash', 'biker_arbok', 'blackbelt_urshifur',
-				'blackbelt_urshifus', 'blaine', 'boltund', 'breeder_snorlax', 'bruno1', 'bruno2', 'bugcatcher_butterfree', 'bugsy', 'chuck', 'cinderace', 'clair', 'coalossal',
-				'copperajah', 'delphox', 'electrode', 'falkner', 'farfectchd', 'flint_infernape', 'flygon', 'grimmsley', 'hop_dubwool', 'jasmine', 'jessie',
-				'jojofan', 'kingler', 'klara_glowking', 'kukui_moltresg', 'lance', 'leon_dragapult', 'lorelei', 'may_empoleon', 'morty', 'melony_galarzen', 'ingo_chandelure',
-				'emmet_eelektross', 'mrmime', 'mudkipz', 'mudsdale', 'nursejoy', 'oleana_salazzle', 'peony_calyrex', 'pryce', 'rose_escavalier', 'roserade',
-				'sabrina_mismagius', 'scientist_electivire', 'shielbert_zamazenta', 'sonia_yamper', 'sordward_zacian', 'soup', 'steven_celesteela', 'swimmer_floatzel',
-				'swimmer_lapras', 'veteran_darkrai', 'whitney', 'zinnia', 'zinnia2', 'zinnia3',
+				'acetrainercenti', 'acetrainersandaconda', 'alcremie', 'allistermimikyu', 'beautyappletun', 'bedegapidash', 'bikerarbok', 'blackbelturshifur',
+				'blackbelturshifus', 'blaine', 'boltund', 'breedersnorlax', 'bruno1', 'bruno2', 'bugcatcherbutterfree', 'bugsy', 'chuck', 'cinderace', 'clair', 'coalossal',
+				'copperajah', 'delphox', 'electrode', 'falkner', 'farfectchd', 'flintinfernape', 'flygon', 'grimmsley', 'hopdubwool', 'jasmine', 'jessie',
+				'jojofan', 'kingler', 'klaraglowking', 'kukuimoltresg', 'lance', 'leondragapult', 'lorelei', 'mayempoleon', 'morty', 'melonygalarzen', 'ingochandelure',
+				'emmeteelektross', 'mrmime', 'mudkipz', 'mudsdale', 'nursejoy', 'oleanasalazzle', 'peonycalyrex', 'pryce', 'roseescavalier', 'roserade',
+				'sabrinamismagius', 'scientistelectivire', 'shielbertzamazenta', 'soniayamper', 'sordwardzacian', 'soup', 'stevencelesteela', 'swimmerfloatzel',
+				'swimmerlapras', 'veterandarkrai', 'whitney', 'zinnia', 'zinnia2', 'zinnia3',
 			];
 			for (var i = 0; i < avatarList.length; i++) {
 				var offset = '-' + ((i % 16) * 80 + 1) + 'px -' + (Math.floor(i / 16) * 80 + 1) + 'px';
