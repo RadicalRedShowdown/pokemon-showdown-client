@@ -18,6 +18,8 @@ RewriteEngine on
 
 RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
 RewriteCond %{HTTP_HOST} ^play\.radicalred\.net$ [NC]
+RewriteCond %{QUERY_STRING} !^insecure [NC]
+RewriteRule ^([A-Za-z0-9-]*)$ https://play.radicalred.net/$1 [R=307,NE,L]
 
 RewriteCond %{HTTP_HOST} ^www\.play\.radicalred\.net$ [NC]
 RewriteRule ^(.*) https://play.radicalred.net/$1 [R=301,L]
