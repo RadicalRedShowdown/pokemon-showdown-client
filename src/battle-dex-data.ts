@@ -1435,7 +1435,7 @@ class Species implements Effect {
 		this.isTotem = false;
 		this.isMega = !!(this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid));
 		this.canGigantamax = !!data.canGigantamax;
-		this.isPrimal = !!(this.forme && this.formeid === '-primal');
+		this.isPrimal = !!(this.forme && ['-primal', '-eternamax'].includes(this.formeid));
 		this.battleOnly = data.battleOnly || undefined;
 		this.isNonstandard = data.isNonstandard || null;
 		this.unreleasedHidden = data.unreleasedHidden || false;
