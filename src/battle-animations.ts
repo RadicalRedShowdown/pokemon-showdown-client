@@ -827,7 +827,9 @@ class BattleScene {
 				if (pokemon.level !== 100) {
 					buf2 += '<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>' + pokemon.level + '</span>';
 				}
-				if (pokemon.item) {
+				if (pokemon.item === '(mail)') {
+					buf2 += ' <img src="' + Dex.resourcePrefix + 'fx/mail.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
+				} else if (pokemon.item) {
 					buf2 += ' <img src="' + Dex.resourcePrefix + 'fx/item.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
 				}
 				buf2 += '</div>';
@@ -921,6 +923,8 @@ class BattleScene {
 			} else if (this.battle.weatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.weatherTimeLeft} turn${this.battle.weatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
+			const nullifyWeather = this.battle.abilityActive(['Air Lock', 'Cloud Nine']);
+			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		}
 
 		for (const pseudoWeather of this.battle.pseudoWeather) {
@@ -948,6 +952,9 @@ class BattleScene {
 		if (!this.animating) return;
 		let isIntense = false;
 		let weather = this.battle.weather;
+		if (this.battle.abilityActive(['Air Lock', 'Cloud Nine'])) {
+			weather = '' as ID;
+		}
 		let terrain = '' as ID;
 		for (const pseudoWeatherData of this.battle.pseudoWeather) {
 			let pwid = toID(pseudoWeatherData[0]);
@@ -2485,8 +2492,8 @@ class PokemonSprite extends Sprite {
 		});
 		this.scene.wait(500);
 
+		this.scene.updateSidebar(pokemon.side);
 		if (isPermanent) {
-			this.scene.updateSidebar(pokemon.side);
 			this.resetStatbar(pokemon);
 		} else {
 			this.updateStatbar(pokemon);
@@ -2687,10 +2694,9 @@ class PokemonSprite extends Sprite {
 			status += '<span class="frz">FRZ</span> ';
 		}
 		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
-			let types = pokemon.volatiles.typechange[1].split('/');
-			status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[0]) + '.png" alt="' + types[0] + '" class="pixelated" /> ';
-			if (types[1]) {
-				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" /> ';
+			const types = pokemon.volatiles.typechange[1].split('/');
+			for (const type of types) {
+				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
 			}
 		}
 		if (pokemon.volatiles.typeadd) {

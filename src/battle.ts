@@ -499,7 +499,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		}
 
 		let item = toID(serverPokemon ? serverPokemon.item : this.item);
-		let ability = toID(this.ability || serverPokemon?.ability);
+		let ability = toID(this.effectiveAbility(serverPokemon));
 		if (battle.hasPseudoWeather('Magic Room') || this.volatiles['embargo'] || ability === 'klutz') {
 			item = '' as ID;
 		}
@@ -517,6 +517,16 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 			return false;
 		}
 		return !this.getTypeList(serverPokemon).includes('Flying');
+	}
+	effectiveAbility(serverPokemon?: ServerPokemon) {
+		if (this.fainted || this.volatiles['gastroacid']) return '';
+		const ability = this.side.battle.dex.abilities.get(
+			serverPokemon?.ability || this.ability || serverPokemon?.baseAbility || ''
+		);
+		if (this.side.battle.ngasActive() && !ability.isPermanent) {
+			return '';
+		}
+		return ability.name;
 	}
 	getTypeList(serverPokemon?: ServerPokemon) {
 		const [types, addedType] = this.getTypes(serverPokemon);
@@ -1144,6 +1154,30 @@ class Battle {
 		}
 		return false;
 	}
+	ngasActive() {
+		for (const side of this.sides) {
+			for (const active of side.active) {
+				if (active && !active.fainted && active.ability === 'Neutralizing Gas' && !active.volatiles['gastroacid']) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	abilityActive(abilities: string[]) {
+		if (this.ngasActive()) {
+			abilities = abilities.filter(a => this.dex.abilities.get(a).isPermanent);
+			if (!abilities.length) return false;
+		}
+		for (const side of this.sides) {
+			for (const active of side.active) {
+				if (active && !active.fainted && abilities.includes(active.ability) && !active.volatiles['gastroacid']) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	reset() {
 		this.paused = true;
 		this.scene.pause();
@@ -1390,17 +1424,8 @@ class Battle {
 				}
 			}
 			let pp = 1;
-			let ngasActive = false;
-			for (const side of this.sides) {
-				for (const active of side.active) {
-					if (active && !active.fainted && toID(active.ability) === 'neutralizinggas' && !active.volatiles['gastroacid']) {
-						ngasActive = true;
-						break;
-					}
-				}
-			}
 			// Sticky Web is never affected by pressure
-			if (!ngasActive && move.id !== 'stickyweb') {
+			if (this.abilityActive(['Pressure']) && move.id !== 'stickyweb') {
 				const foeTargets = [];
 
 				if (
@@ -1422,7 +1447,7 @@ class Battle {
 				}
 
 				for (const foe of foeTargets) {
-					if (foe && !foe.fainted && toID(foe.ability) === 'pressure' && !foe.volatiles['gastroacid']) {
+					if (foe && !foe.fainted && foe.effectiveAbility() === 'Pressure') {
 						pp += 1;
 					}
 				}
@@ -2267,6 +2292,7 @@ class Battle {
 			} else {
 				this.activateAbility(poke, ability.name);
 			}
+			this.scene.updateWeather();
 			this.log(args, kwArgs);
 			break;
 		}
@@ -3358,7 +3384,9 @@ class Battle {
 		}
 		case 'poke': {
 			let pokemon = this.rememberTeamPreviewPokemon(args[1], args[2])!;
-			if (args[3] === 'item') {
+			if (args[3] === 'mail') {
+				pokemon.item = '(mail)';
+			} else if (args[3] === 'item') {
 				pokemon.item = '(exists)';
 			}
 			break;
@@ -3396,6 +3424,7 @@ class Battle {
 			} else {
 				poke.side.dragIn(poke);
 			}
+			this.scene.updateWeather();
 			this.log(args, kwArgs);
 			break;
 		}
