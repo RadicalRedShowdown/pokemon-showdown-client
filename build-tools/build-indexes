@@ -835,49 +835,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (gens.indexOf(8) >= 0 && !vcOnly) BattleTeambuilderTable['gen8dlc1'].learnsets[id][moveid] += 'g';
 		}
 	}
-	BattleTeambuilderTable['rr22b'] = {};
-	BattleTeambuilderTable['rr22b'].learnsets = {};
-	const RR22bLearnsets = Dex.mod('rr22b').data.Learnsets;
-	for (const id in RR22bLearnsets) {
-		const learnset = RR22bLearnsets[id].learnset;
-		if (!learnset) continue;
-		BattleTeambuilderTable['rr22b'].learnsets[id] = {};
-		for (const moveid in learnset) {
-			const gens = learnset[moveid].map(x => Number(x[0]));
-			const minGen = Math.min(...gens);
-			const vcOnly = (minGen === 7 && learnset[moveid].every(x => x[0] !== '7' || x === '7V') ||
-				minGen === 8 && learnset[moveid].every(x => x[0] !== '8' || x === '8V'));
-
-			if (minGen <= 4 && (gen3HMs.has(moveid) || gen4HMs.has(moveid))) {
-				let legalGens = '';
-				let available = false;
-
-				if (minGen === 3) {
-					legalGens += '3';
-					available = true;
-				}
-				if (available) available = !gen3HMs.has(moveid);
-
-				if (available || gens.includes(4)) {
-					legalGens += '4';
-					available = true;
-				}
-				if (available) available = !gen4HMs.has(moveid);
-
-				let minUpperGen = available ? 5 : Math.min(
-					...gens.filter(gen => gen > 4)
-				);
-				legalGens += '012345678'.slice(minUpperGen);
-				BattleTeambuilderTable['rr22b'].learnsets[id][moveid] = legalGens;
-			} else {
-				BattleTeambuilderTable['rr22b'].learnsets[id][moveid] = '012345678'.slice(minGen);
-			}
-
-			if (gens.indexOf(6) >= 0) BattleTeambuilderTable['rr22b'].learnsets[id][moveid] += 'p';
-			if (gens.indexOf(7) >= 0 && !vcOnly) BattleTeambuilderTable['rr22b'].learnsets[id][moveid] += 'q';
-			if (gens.indexOf(8) >= 0 && !vcOnly) BattleTeambuilderTable['rr22b'].learnsets[id][moveid] += 'g';
-		}
-	}
 
 	//
 	// For dex site
@@ -931,61 +888,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			const rrEntry = Dex.abilities.get(id);
 			if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
 				overrideAbilityDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
-			}
-		}
-	}
-
-	//
-	// 2.2b
-	//
-
-	{
-		const rr22bData = Dex.mod('rr22b').data;
-		const overrideSpeciesData = {};
-		BattleTeambuilderTable['rr22b'].overrideSpeciesData = overrideSpeciesData;
-		const overrideSpeciesKeys = ['abilities', 'baseStats', 'types'];
-		for (const id in rr22bData.Pokedex) {
-			const rr22bEntry = rr22bData.Pokedex[id];
-			const rrEntry = Dex.data.Pokedex[id];
-			for (const key of overrideSpeciesKeys) {
-				if (JSON.stringify(rr22bEntry[key]) !== JSON.stringify(rrEntry[key])) {
-					if (!overrideSpeciesData[id]) overrideSpeciesData[id] = {};
-					overrideSpeciesData[id][key] = rr22bEntry[key];
-				}
-			}
-		}
-
-		const overrideMoveData = {};
-		BattleTeambuilderTable['rr22b'].overrideMoveData = overrideMoveData;
-		const overrideMoveKeys = ['accuracy', 'basePower', 'category', 'desc', 'pp', 'shortDesc', 'type'];
-		for (const id in rr22bData.Moves) {
-			const rr22bEntry = Dex.mod('rr22b').moves.get(id);
-			const rrEntry = Dex.moves.get(id);
-			for (const key of overrideMoveKeys) {
-				if (JSON.stringify(rr22bEntry[key]) !== JSON.stringify(rrEntry[key])) {
-					if (!overrideMoveData[id]) overrideMoveData[id] = {};
-					overrideMoveData[id][key] = rr22bEntry[key];
-				}
-			}
-		}
-
-		const overrideItemDesc = {};
-		BattleTeambuilderTable['rr22b'].overrideItemDesc = overrideItemDesc;
-		for (const id in rr22bData.Items) {
-			const rr22bEntry = Dex.mod('rr22b').items.get(id);
-			const rrEntry = Dex.items.get(id);
-			if ((rr22bEntry.shortDesc || rr22bEntry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideItemDesc[id] = (rr22bEntry.shortDesc || rr22bEntry.desc);
-			}
-		}
-
-		const overrideAbilityDesc = {};
-		BattleTeambuilderTable['rr22b'].overrideAbilityDesc = overrideAbilityDesc;
-		for (const id in rr22bData.Abilities) {
-			const rr22bEntry = Dex.mod('rr22b').abilities.get(id);
-			const rrEntry = Dex.abilities.get(id);
-			if ((rr22bEntry.shortDesc || rr22bEntry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideAbilityDesc[id] = (rr22bEntry.shortDesc || rr22bEntry.desc);
 			}
 		}
 	}

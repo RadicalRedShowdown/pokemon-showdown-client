@@ -835,13 +835,9 @@ class ModdedDex {
 	pokeballs: string[] | null = null;
 	constructor(modid: ID) {
 		this.modid = modid;
-		if (modid === 'rr22b') {
-			this.gen = 8;
-		} else {
-			let gen = parseInt(modid.slice(3), 10);
-			if (!modid.startsWith('gen') || !gen) throw new Error("Unsupported modid");
-			this.gen = gen;
-		}
+		let gen = parseInt(modid.slice(3), 10);
+		if (!modid.startsWith('gen') || !gen) throw new Error("Unsupported modid");
+		this.gen = gen;
 	}
 	moves = {
 		get: (name: string): Move => {
@@ -854,21 +850,14 @@ class ModdedDex {
 
 			let data = {...Dex.moves.get(name)};
 
-			if (this.modid === 'rr22b') {
-				const table = window.BattleTeambuilderTable['rr22b'];
+			for (let i = Dex.gen - 1; i >= this.gen; i--) {
+				const table = window.BattleTeambuilderTable[`gen${i}`];
 				if (id in table.overrideMoveData) {
 					Object.assign(data, table.overrideMoveData[id]);
 				}
-			} else {
-				for (let i = Dex.gen - 1; i >= this.gen; i--) {
-					const table = window.BattleTeambuilderTable[`gen${i}`];
-					if (id in table.overrideMoveData) {
-						Object.assign(data, table.overrideMoveData[id]);
-					}
-				}
-				if (this.gen <= 3 && data.category !== 'Status') {
-					data.category = Dex.getGen3Category(data.type);
-				}
+			}
+			if (this.gen <= 3 && data.category !== 'Status') {
+				data.category = Dex.getGen3Category(data.type);
 			}
 
 			const move = new Move(id, name, data);
@@ -888,18 +877,11 @@ class ModdedDex {
 
 			let data = {...Dex.items.get(name)};
 
-			if (this.modid === 'rr22b') {
-				const table = window.BattleTeambuilderTable['rr22b'];
+			for (let i = this.gen; i < 8; i++) {
+				const table = window.BattleTeambuilderTable['gen' + i];
 				if (id in table.overrideItemDesc) {
 					data.shortDesc = table.overrideItemDesc[id];
-				}
-			} else {
-				for (let i = this.gen; i < 8; i++) {
-					const table = window.BattleTeambuilderTable['gen' + i];
-					if (id in table.overrideItemDesc) {
-						data.shortDesc = table.overrideItemDesc[id];
-						break;
-					}
+					break;
 				}
 			}
 
@@ -920,18 +902,11 @@ class ModdedDex {
 
 			let data = {...Dex.abilities.get(name)};
 
-			if (this.modid === 'rr22b') {
-				const table = window.BattleTeambuilderTable['rr22b'];
+			for (let i = this.gen; i < 8; i++) {
+				const table = window.BattleTeambuilderTable['gen' + i];
 				if (id in table.overrideAbilityDesc) {
 					data.shortDesc = table.overrideAbilityDesc[id];
-				}
-			} else {
-				for (let i = this.gen; i < 8; i++) {
-					const table = window.BattleTeambuilderTable['gen' + i];
-					if (id in table.overrideAbilityDesc) {
-						data.shortDesc = table.overrideAbilityDesc[id];
-						break;
-					}
+					break;
 				}
 			}
 
@@ -952,32 +927,25 @@ class ModdedDex {
 
 			let data = {...Dex.species.get(name)};
 
-			if (this.modid === 'rr22b') {
-				const table = window.BattleTeambuilderTable['rr22b'];
+			for (let i = Dex.gen - 1; i >= this.gen; i--) {
+				const table = window.BattleTeambuilderTable[`gen${i}`];
 				if (id in table.overrideSpeciesData) {
 					Object.assign(data, table.overrideSpeciesData[id]);
 				}
-			} else {
-				for (let i = Dex.gen - 1; i >= this.gen; i--) {
-					const table = window.BattleTeambuilderTable[`gen${i}`];
-					if (id in table.overrideSpeciesData) {
-						Object.assign(data, table.overrideSpeciesData[id]);
-					}
-				}
-				if (this.gen < 3) {
-					data.abilities = {0: "None"};
-				}
-
-				const table = window.BattleTeambuilderTable[this.modid];
-				if (id in table.overrideTier) data.tier = table.overrideTier[id];
-				if (!data.tier && id.slice(-5) === 'totem') {
-					data.tier = this.species.get(id.slice(0, -5)).tier;
-				}
-				if (!data.tier && data.baseSpecies && toID(data.baseSpecies) !== id) {
-					data.tier = this.species.get(data.baseSpecies).tier;
-				}
-				if (data.gen > this.gen) data.tier = 'Illegal';
 			}
+			if (this.gen < 3) {
+				data.abilities = {0: "None"};
+			}
+
+			const table = window.BattleTeambuilderTable[this.modid];
+			if (id in table.overrideTier) data.tier = table.overrideTier[id];
+			if (!data.tier && id.slice(-5) === 'totem') {
+				data.tier = this.species.get(id.slice(0, -5)).tier;
+			}
+			if (!data.tier && data.baseSpecies && toID(data.baseSpecies) !== id) {
+				data.tier = this.species.get(data.baseSpecies).tier;
+			}
+			if (data.gen > this.gen) data.tier = 'Illegal';
 
 			const species = new Species(id, name, data);
 			this.cache.Species[id] = species;
@@ -994,7 +962,6 @@ class ModdedDex {
 
 			let data = {...Dex.types.get(name)};
 
-			if (this.modid === 'rr22b') return data;
 			for (let i = 7; i >= this.gen; i--) {
 				const table = window.BattleTeambuilderTable['gen' + i];
 				if (id in table.removeType) {

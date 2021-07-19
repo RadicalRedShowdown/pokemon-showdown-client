@@ -21,9 +21,6 @@
 				this.curTeam.iconCache = '!';
 				this.curTeam.gen = this.getGen(this.curTeam.format);
 				this.curTeam.dex = Dex.forGen(this.curTeam.gen);
-				if (this.curTeam.format.includes('rrdl')) {
-					this.curTeam.dex = Dex.mod('rr22b');
-				}
 				Storage.activeSetList = this.curSetList;
 			}
 		},
@@ -682,9 +679,6 @@
 			this.curTeam.iconCache = '!';
 			this.curTeam.gen = this.getGen(this.curTeam.format);
 			this.curTeam.dex = Dex.forGen(this.curTeam.gen);
-			if (this.curTeam.format.includes('rrdl')) {
-				this.curTeam.dex = Dex.mod('rr22b');
-			}
 			Storage.activeSetList = this.curSetList = Storage.unpackTeam(this.curTeam.team);
 			this.curTeamIndex = i;
 			this.update();
@@ -1287,7 +1281,17 @@
 					type: 'GET',
 					url: url,
 					success: function (data) {
-						Storage.activeSetList = self.curSetList = Storage.importTeam(data);
+						if (/^https?:\/\/pokepast\.es\/.*\/json\s*$/.test(url)) {
+							var teamData = JSON.parse(data);
+							Storage.activeSetList = self.curSetList = Storage.importTeam(teamData.paste);
+							var title = teamData.title;
+							if (title && !title.startsWith('Untitled')) {
+								title.replace(/[\|\\\/]/g, '');
+								self.$('.teamnameedit').val(title).change();
+							}
+						} else {
+							Storage.activeSetList = self.curSetList = Storage.importTeam(data);
+						}
 						self.$('.teamedit textarea, .teamedit .savebutton').attr('disabled', null);
 						self.back();
 					},
@@ -1310,7 +1314,7 @@
 
 			switch (host) {
 			case 'pokepast.es':
-				return 'https://pokepast.es/' + path.replace(/\/.*/, '') + '/raw';
+				return 'https://pokepast.es/' + path.replace(/\/.*/, '') + '/json';
 			default: // gist
 				var split = path.split('/');
 				return split.length < 2 ? undefined : 'https://gist.githubusercontent.com/' + split[0] + '/' + split[1] + '/raw';
@@ -1434,9 +1438,6 @@
 			this.curTeam.format = format;
 			this.curTeam.gen = this.getGen(this.curTeam.format);
 			this.curTeam.dex = Dex.forGen(this.curTeam.gen);
-			if (this.curTeam.format.includes('rrdl')) {
-				this.curTeam.dex = Dex.mod('rr22b');
-			}
 			this.save();
 			if (this.curTeam.gen === 5 && !Dex.loadedSpriteData['bw']) Dex.loadSpriteData('bw');
 			this.update();
@@ -2007,8 +2008,8 @@
 				var number = parseInt(format.charAt(3), 10);
 				if (1 <= number && number <= 7) {
 					generationNumber = number;
-					format = format.substr(4);
 				}
+				format = format.substr(4);
 			}
 			var generation = ['rb', 'gs', 'rs', 'dp', 'bw', 'xy', 'sm', 'ss'][generationNumber - 1];
 			if (format === 'battlespotdoubles') {
@@ -2018,9 +2019,11 @@
 			} else if (format === 'ou' || format === 'uu' || format === 'ru' || format === 'nu' || format === 'pu' || format === 'lc' || format === 'monotype' || format === 'mixandmega' || format === 'nfe' || format === 'nationaldex' || format === 'stabmons' || format === '1v1' || format === 'almostanyability') {
 				smogdexid += '/' + format;
 			} else if (format === 'balancedhackmons') {
-				smogdexid += 'bh';
-			} else if (format === 'nationaldexag' || format === 'anythinggoes') {
-				smogdexid += 'ag';
+				smogdexid += '/bh';
+			} else if (format === 'anythinggoes') {
+				smogdexid += '/ag';
+			} else if (format === 'nationaldexag') {
+				smogdexid += '/national-dex-ag';
 			}
 			return 'http://smogon.com/dex/' + generation + '/pokemon/' + smogdexid + '/';
 		},

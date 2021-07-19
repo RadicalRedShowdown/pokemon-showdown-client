@@ -3209,7 +3209,6 @@ class Battle {
 				this.messageFadeTime = 40;
 				this.isBlitz = true;
 			}
-			if (this.tier.includes('RRDL')) this.dex = Dex.mod('rr22b' as ID);
 			this.log(args);
 			break;
 		}

@@ -543,7 +543,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 	 */
 	set: PokemonSet | null = null;
 
-	protected formatType: 'doubles' | 'letsgo' | 'metronome' | 'natdex' | 'nfe' | 'dlc1' | 'dlc1doubles' | 'rr22b' | null = null;
+	protected formatType: 'doubles' | 'letsgo' | 'metronome' | 'natdex' | 'nfe' | 'dlc1' | 'dlc1doubles' | null = null;
 
 	/**
 	 * Cached copy of what the results list would be with only base filters
@@ -600,10 +600,6 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			format = format.slice(3) as ID;
 			this.formatType = 'nfe';
 			if (!format) format = 'ou' as ID;
-		}
-		if (format.startsWith('rrdl')) {
-			this.dex = Dex.mod('rr22b' as ID);
-			this.formatType = 'rr22b';
 		}
 		this.format = format;
 
@@ -751,8 +747,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			return pokemon.num >= 0 ? String(pokemon.num) : pokemon.tier;
 		}
 		let table = window.BattleTeambuilderTable;
-		const tableKey = this.formatType === 'rr22b' ? `rr22b` :
-			this.formatType === 'doubles' ? `gen${this.dex.gen}doubles` :
+		const tableKey = this.formatType === 'doubles' ? `gen${this.dex.gen}doubles` :
 			this.formatType === 'letsgo' ? 'letsgo' :
 			this.formatType === 'nfe' ? `gen${this.dex.gen}nfe` :
 			this.formatType === 'dlc1' ? 'gen8dlc1' :
@@ -761,7 +756,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (table && table[tableKey]) {
 			table = table[tableKey];
 		}
-		if (!table || this.formatType === 'rr22b') return pokemon.tier;
+		if (!table) return pokemon.tier;
 
 		let id = pokemon.id;
 		if (id in table.overrideTier) {
@@ -1379,7 +1374,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
 			if (this.formatType === 'letsgo') learnset = BattleTeambuilderTable['letsgo'].learnsets[learnsetid];
 			if (this.formatType?.startsWith('dlc1')) learnset = BattleTeambuilderTable['gen8dlc1'].learnsets[learnsetid];
-			if (this.formatType === 'rr22b') learnset = BattleTeambuilderTable['rr22b'].learnsets[learnsetid];
 			if (learnset) {
 				for (let moveid in learnset) {
 					let learnsetEntry = learnset[moveid];
