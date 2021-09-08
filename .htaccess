@@ -16,10 +16,9 @@ AddType application/x-web-app-manifest+json .webapp
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
-RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
-RewriteCond %{HTTP_HOST} ^play\.radicalred\.net$ [NC]
+RewriteCond %{SERVER_PORT} 80
 RewriteCond %{QUERY_STRING} !^insecure [NC]
-RewriteRule ^([A-Za-z0-9-]*)$ https://play.radicalred.net/$1 [R=307,NE,L]
+RewriteRule ^(.*)$ https://play.radicalred.net/$1 [R=307,NE,L]
 
 RewriteCond %{HTTP_HOST} ^www\.play\.radicalred\.net$ [NC]
 RewriteRule ^(.*) https://play.radicalred.net/$1 [R=301,L]
