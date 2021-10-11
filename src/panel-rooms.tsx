@@ -137,14 +137,14 @@ class RoomsPanel extends PSRoomPanel {
 				<button class="button" data-href="/users" title="Find an online user">
 					<span
 						class="pixelated usercount"
-						title="Meloetta is PS's mascot! The Aria forme is about using its voice, and represents our chatrooms."
+						title="Typhlosion is not good lmao."
 					></span>
 					<strong>{rooms.userCount || '-'}</strong> users online
 				</button> {}
 				<button class="button" data-href="/battles" title="Watch an active battle">
 					<span
 						class="pixelated battlecount"
-						title="Meloetta is PS's mascot! The Pirouette forme is Fighting-type, and represents our battles."
+						title="Houndoom is Radical Red's mascot! The Pirouette forme is Fighting-type, and represents our battles."
 					></span>
 					<strong>{rooms.battleCount || '-'}</strong> active battles
 				</button>
