@@ -191,6 +191,7 @@ function updateFiles() {
 			writeFiles(indexContents, preactIndexContents, crossprotocolContents, replayEmbedContents);
 		});
 	} else {
+		indexContents = indexContents.replace(/<!-- head custom -->/g, '' + fs.readFileSync('config/head-custom.html'));
 		writeFiles(indexContents, preactIndexContents, crossprotocolContents, replayEmbedContents);
 	}
 }
