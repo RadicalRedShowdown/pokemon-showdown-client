@@ -503,7 +503,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	nohface: 1344 + 18,
 	monohm: 1344 + 19,
 	duohm: 1344 + 20,
-	// protowatt: 1344 + 21,
+	protowatt: 1344 + 21,
 	voodoll: 1344 + 22,
 	mumbao: 1344 + 23,
 	fawnifer: 1344 + 24,
@@ -515,6 +515,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	justyke: 1344 + 30,
 	solotl: 1344 + 31,
 	miasmite: 1344 + 32,
+	dorsoil: 1344 + 33,
 
 	pikachuflying: 1380,
 	pikachusurfing: 1380 + 1,
@@ -1069,14 +1070,16 @@ class Item implements Effect {
 }
 
 interface MoveFlags {
-	/** Ignores a target's substitute. */
-	authentic?: 1 | 0;
+	/** The move has an animation when used on an ally. */
+	allyanim?: 1 | 0;
 	/** Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability. */
 	bite?: 1 | 0;
 	/** Power is multiplied by 1.2 when used by a Pokemon with the Blademaster Ability. */
 	blade?: 1 | 0;
 	/** Has no effect on Pokemon with the Bulletproof Ability. */
 	bullet?: 1 | 0;
+	/** Ignores a target's substitute. */
+	bypasssub?: 1 | 0;
 	/** The user is unable to make a move between turns. */
 	charge?: 1 | 0;
 	/** Makes contact. */
@@ -1095,8 +1098,6 @@ interface MoveFlags {
 	kick?: 1 | 0;
 	/** Can be copied by Mirror Move. */
 	mirror?: 1 | 0;
-	/** Unknown effect. */
-	mystery?: 1 | 0;
 	/** Prevented from being executed or selected in a Sky Battle. */
 	nonsky?: 1 | 0;
 	/** Has no effect on Grass-type Pokemon, Pokemon with the Overcoat Ability, and Pokemon holding Safety Goggles. */
@@ -1158,6 +1159,7 @@ class Move implements Effect {
 	readonly hasCrashDamage: boolean;
 	readonly noPPBoosts: boolean;
 	readonly secondaries: ReadonlyArray<any> | null;
+	readonly noSketch: boolean;
 	readonly num: number;
 	readonly noTM: boolean;
 	readonly noTutor: boolean;
@@ -1193,6 +1195,7 @@ class Move implements Effect {
 		this.hasCrashDamage = data.hasCrashDamage || false;
 		this.noPPBoosts = data.noPPBoosts || false;
 		this.secondaries = data.secondaries || (data.secondary ? [data.secondary] : null);
+		this.noSketch = !!data.noSketch;
 		this.noTM = data.noTM || false;
 		this.noTutor = data.noTutor || false;
 
@@ -1373,6 +1376,7 @@ class Species implements Effect {
 	readonly color: string;
 	readonly genderRatio: Readonly<{M: number, F: number}> | null;
 	readonly eggGroups: ReadonlyArray<string>;
+	readonly tags: ReadonlyArray<string>;
 
 	// format data
 	readonly otherFormes: ReadonlyArray<string> | null;
@@ -1423,6 +1427,7 @@ class Species implements Effect {
 		this.color = data.color || '';
 		this.genderRatio = data.genderRatio || null;
 		this.eggGroups = data.eggGroups || [];
+		this.tags = data.tags || [];
 
 		this.otherFormes = data.otherFormes || null;
 		this.cosmeticFormes = data.cosmeticFormes || null;
