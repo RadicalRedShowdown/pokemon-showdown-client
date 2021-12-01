@@ -1926,13 +1926,13 @@ class BattleTooltips {
 	static orbUsers: {[speciesForme: string]: string} = {
 		'Latias': 'Soul Dew',
 		'Latios': 'Soul Dew',
-		'Dialga': 'Adamant Orb',
+		//'Dialga': 'Adamant Orb',
 		'Palkia': 'Lustrous Orb',
 		'Giratina': 'Griseous Orb',
 	};
 	static orbTypes: {[itemName: string]: TypeName} = {
 		'Soul Dew': 'Psychic',
-		'Adamant Orb': 'Steel',
+		//'Adamant Orb': 'Steel',
 		'Lustrous Orb': 'Water',
 		'Griseous Orb': 'Ghost',
 	};
