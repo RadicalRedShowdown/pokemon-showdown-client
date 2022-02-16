@@ -160,7 +160,6 @@ function writeFiles(indexContents, preactIndexContents, crossprotocolContents, r
 function updateFiles() {
 	// add hashes to js and css files and rewrite URLs
 	let indexContents = fs.readFileSync('index.template.html', {encoding: 'utf8'});
-	indexContents = indexContents.replace(URL_REGEX, updateURL);
 	let preactIndexContents = fs.readFileSync('preactalpha.template.html', {encoding: 'utf8'});
 	preactIndexContents = preactIndexContents.replace(URL_REGEX, updateURL);
 	let crossprotocolContents = fs.readFileSync('crossprotocol.template.html', {encoding: 'utf8'});
@@ -185,13 +184,14 @@ function updateFiles() {
 
 			indexContents = indexContents.replace(/<!-- newsid -->/g, newsData[0]);
 			indexContents = indexContents.replace(/<!-- news -->/g, newsData[1]);
-
 			indexContents = indexContents.replace(/<!-- head custom -->/g, '' + fs.readFileSync('config/head-custom.html'));
 
+			indexContents = indexContents.replace(URL_REGEX, updateURL);
 			writeFiles(indexContents, preactIndexContents, crossprotocolContents, replayEmbedContents);
 		});
 	} else {
 		indexContents = indexContents.replace(/<!-- head custom -->/g, '' + fs.readFileSync('config/head-custom.html'));
+		indexContents = indexContents.replace(URL_REGEX, updateURL);
 		writeFiles(indexContents, preactIndexContents, crossprotocolContents, replayEmbedContents);
 	}
 }
