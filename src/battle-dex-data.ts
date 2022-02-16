@@ -481,6 +481,8 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	astrolotl: 1308 + 29,
 	miasmaw: 1308 + 30,
 	chromera: 1308 + 31,
+	venomicon: 1308 + 32,
+	venomiconepilogue: 1308 + 33,
 
 	syclar: 1344 + 0,
 	embirch: 1344 + 1,
@@ -1138,6 +1140,7 @@ class Move implements Effect {
 	readonly category: 'Physical' | 'Special' | 'Status';
 	readonly priority: number;
 	readonly target: MoveTarget;
+	readonly pressureTarget: MoveTarget;
 	readonly flags: Readonly<MoveFlags>;
 	readonly critRatio: number;
 
@@ -1179,6 +1182,7 @@ class Move implements Effect {
 		this.category = data.category || 'Physical';
 		this.priority = data.priority || 0;
 		this.target = data.target || 'normal';
+		this.pressureTarget = data.pressureTarget || this.target;
 		this.flags = data.flags || {};
 		this.critRatio = data.critRatio === 0 ? 0 : (data.critRatio || 1);
 
@@ -1388,7 +1392,7 @@ class Species implements Effect {
 	readonly evoMove: string;
 	readonly evoItem: string;
 	readonly evoCondition: string;
-	readonly requiredItem: string;
+	readonly requiredItems: ReadonlyArray<string>;
 	readonly tier: string;
 	readonly isTotem: boolean;
 	readonly isMega: boolean;
@@ -1438,7 +1442,7 @@ class Species implements Effect {
 		this.evoMove = data.evoMove || '';
 		this.evoItem = data.evoItem || '';
 		this.evoCondition = data.evoCondition || '';
-		this.requiredItem = data.requiredItem || '';
+		this.requiredItems = data.requiredItems || (data.requiredItem ? [data.requiredItem] : []);
 		this.tier = data.tier || '';
 
 		this.isTotem = false;

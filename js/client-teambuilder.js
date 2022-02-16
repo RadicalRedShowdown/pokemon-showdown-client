@@ -347,7 +347,7 @@
 				buf += '<h2>Hi</h2>';
 				buf += '<p>Did you have a good day?</p>';
 				buf += '<p><button class="button" name="greeting" value="Y"><i class="fa fa-smile-o"></i> Yes, my day was pretty good</button> <button class="button" name="greeting" value="N"><i class="fa fa-frown-o"></i> No, it wasn\'t great</button></p>';
-				buf += '<h2>All teams</h2>';
+				buf += '<h2>All teams <small style="font-weight: normal">(' + teams.length + ')</small></h2>';
 			} else {
 				if (this.curFolder.slice(-1) === '/') {
 					filterFolder = this.curFolder.slice(0, -1);
@@ -358,7 +358,10 @@
 					}
 				} else {
 					filterFormat = this.curFolder;
-					buf += '<h2><i class="fa fa-folder-open-o"></i> ' + filterFormat + '</h2>';
+					var func = function (team) {
+						return team.format === filterFormat;
+					};
+					buf += '<h2><i class="fa fa-folder-open-o"></i> ' + filterFormat + ' <small style="font-weight: normal">(' + teams.filter(func).length + ')</small></h2>';
 				}
 			}
 
@@ -2596,13 +2599,13 @@
 
 			if (this.curTeam.gen > 1) {
 				buf += '<div class="formrow"><label class="formlabel">Gender:</label><div>';
-				if (species.gender && this.curTeam.format.indexOf('hackmons') < 0) {
+				if (species.gender && !this.curTeam.format.includes('hackmons')) {
 					var genderTable = {'M': "Male", 'F': "Female", 'N': "Genderless"};
 					buf += genderTable[species.gender];
 				} else {
 					buf += '<label><input type="radio" name="gender" value="M"' + (set.gender === 'M' ? ' checked' : '') + ' /> Male</label> ';
 					buf += '<label><input type="radio" name="gender" value="F"' + (set.gender === 'F' ? ' checked' : '') + ' /> Female</label> ';
-					if (this.curTeam.format.indexOf('hackmons') < 0) {
+					if (!this.curTeam.format.includes('hackmons')) {
 						buf += '<label><input type="radio" name="gender" value="N"' + (!set.gender ? ' checked' : '') + ' /> Random</label>';
 					} else {
 						buf += '<label><input type="radio" name="gender" value="N"' + (set.gender === 'N' ? ' checked' : '') + ' /> Genderless</label>';
@@ -3220,8 +3223,8 @@
 			if (set.happiness) delete set.happiness;
 			if (set.shiny) delete set.shiny;
 			if (set.gigantamax) delete set.gigantamax;
-			if (this.curTeam.format.indexOf('hackmons') < 0) {
-				set.item = (species.requiredItem || '');
+			if (!this.curTeam.format.includes('hackmons') && species.requiredItems.length === 1) {
+				set.item = species.requiredItems[0];
 			} else {
 				set.item = '';
 			}
