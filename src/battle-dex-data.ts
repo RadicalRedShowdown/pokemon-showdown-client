@@ -1076,8 +1076,6 @@ interface MoveFlags {
 	allyanim?: 1 | 0;
 	/** Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability. */
 	bite?: 1 | 0;
-	/** Power is multiplied by 1.2 when used by a Pokemon with the Blademaster Ability. */
-	blade?: 1 | 0;
 	/** Has no effect on Pokemon with the Bulletproof Ability. */
 	bullet?: 1 | 0;
 	/** Ignores a target's substitute. */
@@ -1096,8 +1094,6 @@ interface MoveFlags {
 	gravity?: 1 | 0;
 	/** Prevented from being executed or selected during Heal Block's effect. */
 	heal?: 1 | 0;
-	/** Power is multiplied by 1.3 when used by a Pokemon with the Stiker Ability. */
-	kick?: 1 | 0;
 	/** Can be copied by Mirror Move. */
 	mirror?: 1 | 0;
 	/** Prevented from being executed or selected in a Sky Battle. */
@@ -1164,8 +1160,6 @@ class Move implements Effect {
 	readonly secondaries: ReadonlyArray<any> | null;
 	readonly noSketch: boolean;
 	readonly num: number;
-	readonly noTM: boolean;
-	readonly noTutor: boolean;
 
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
@@ -1200,8 +1194,6 @@ class Move implements Effect {
 		this.noPPBoosts = data.noPPBoosts || false;
 		this.secondaries = data.secondaries || (data.secondary ? [data.secondary] : null);
 		this.noSketch = !!data.noSketch;
-		this.noTM = data.noTM || false;
-		this.noTutor = data.noTutor || false;
 
 		this.isMax = data.isMax || false;
 		this.maxMove = data.maxMove || {basePower: 0};
@@ -1370,9 +1362,6 @@ class Species implements Effect {
 		hp: number, atk: number, def: number, spa: number, spd: number, spe: number,
 	}>;
 	readonly weightkg: number;
-	readonly items: Readonly<{
-		5: string, 50: string,
-	}>;
 
 	// flavor data
 	readonly heightm: number;
@@ -1424,7 +1413,6 @@ class Species implements Effect {
 		this.abilities = data.abilities || {0: "No Ability"};
 		this.baseStats = data.baseStats || {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
 		this.weightkg = data.weightkg || 0;
-		this.items = data.items || {5: "None", 50: "None"};
 
 		this.heightm = data.heightm || 0;
 		this.gender = data.gender || '';
@@ -1448,7 +1436,7 @@ class Species implements Effect {
 		this.isTotem = false;
 		this.isMega = !!(this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid));
 		this.canGigantamax = !!data.canGigantamax;
-		this.isPrimal = !!(this.forme && ['-primal', '-eternamax'].includes(this.formeid));
+		this.isPrimal = !!(this.forme && ['-primal'].includes(this.formeid));
 		this.battleOnly = data.battleOnly || undefined;
 		this.isNonstandard = data.isNonstandard || null;
 		this.unreleasedHidden = data.unreleasedHidden || false;

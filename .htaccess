@@ -18,10 +18,10 @@ RewriteEngine on
 
 RewriteCond %{SERVER_PORT} 80
 RewriteCond %{QUERY_STRING} !^insecure [NC]
-RewriteRule ^(.*)$ https://play.radicalred.net/$1 [R=307,NE,L]
+RewriteRule ^(.*)$ https://plamons.radicalred.net/$1 [R=307,NE,L]
 
-RewriteCond %{HTTP_HOST} ^www\.play\.radicalred\.net$ [NC]
-RewriteRule ^(.*) https://play.radicalred.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.plamons\.radicalred\.net$ [NC]
+RewriteRule ^(.*) https://plamons.radicalred.net/$1 [R=301,L]
 
 RewriteRule ^style/fonts?/.*?\.(eot|svg|ttf|woff|woff2)$ - [E=SAFE_RESOURCE:1]
 Header set Access-Control-Allow-Origin * env=SAFE_RESOURCE

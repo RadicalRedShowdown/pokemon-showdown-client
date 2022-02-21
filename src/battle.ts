@@ -2346,8 +2346,7 @@ export class Battle {
 			let species = this.dex.species.get(newSpeciesForme);
 
 			poke.speciesForme = newSpeciesForme;
-			const abilities = species.abilities;
-			poke.ability = poke.baseAbility = (abilities && Object.keys(abilities).length === 1 ? abilities['0'] : '');
+			poke.ability = poke.baseAbility = (species.abilities ? species.abilities['0'] : '');
 
 			poke.details = args[2];
 			poke.searchid = args[1].substr(0, 2) + args[1].substr(3) + '|' + args[2];

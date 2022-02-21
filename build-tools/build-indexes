@@ -19,7 +19,7 @@ child_process.execSync('git pull', {cwd: 'data/pokemon-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/pokemon-showdown'});
 console.log("DONE");
 
-const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8rr');
+const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8pla');
 const Tags = require('../data/pokemon-showdown/.data-dist/tags').Tags;
 const toID = Dex.toID;
 process.stdout.write("Loading gen 6 data... ");
@@ -343,7 +343,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (isStadium) genStr += 'stadium' + (genNum > 1 ? genNum : '');
 			return genStr;
 		})();
-		const mod = gen === 'gen8' ? 'gen8rr' : gen;
+		const mod = gen === 'gen8' ? 'gen8pla' : gen;
 		// process.stdout.write("" + gen + (isDoubles ? " doubles" : "") + "... ");
 		const pokemon = Object.keys(Dex.data.Pokedex);
 		pokemon.sort();
@@ -1094,62 +1094,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		}
 	}
 
-	//
-	// For dex site
-	//
-
-	{
-		BattleTeambuilderTable['gen8old'] = {};
-		const gen8Data = Dex.mod('gen8').data;
-		const overrideSpeciesData = {};
-		BattleTeambuilderTable['gen8old'].overrideSpeciesData = overrideSpeciesData;
-		const overrideSpeciesKeys = ['abilities', 'baseStats', 'types'];
-		for (const id in gen8Data.Pokedex) {
-			const gen8Entry = gen8Data.Pokedex[id];
-			const rrEntry = Dex.data.Pokedex[id];
-			for (const key of overrideSpeciesKeys) {
-				if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
-					if (!overrideSpeciesData[id]) overrideSpeciesData[id] = {};
-					overrideSpeciesData[id][key] = gen8Entry[key];
-				}
-			}
-		}
-
-		const overrideMoveData = {};
-		BattleTeambuilderTable['gen8old'].overrideMoveData = overrideMoveData;
-		const overrideMoveKeys = ['accuracy', 'basePower', 'category', 'desc', 'pp', 'shortDesc', 'type'];
-		for (const id in gen8Data.Moves) {
-			const gen8Entry = Dex.mod('gen8').moves.get(id);
-			const rrEntry = Dex.moves.get(id);
-			for (const key of overrideMoveKeys) {
-				if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
-					if (!overrideMoveData[id]) overrideMoveData[id] = {};
-					overrideMoveData[id][key] = gen8Entry[key];
-				}
-			}
-		}
-
-		const overrideItemDesc = {};
-		BattleTeambuilderTable['gen8old'].overrideItemDesc = overrideItemDesc;
-		for (const id in gen8Data.Items) {
-			const gen8Entry = Dex.mod('gen8').items.get(id);
-			const rrEntry = Dex.items.get(id);
-			if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideItemDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
-			}
-		}
-
-		const overrideAbilityDesc = {};
-		BattleTeambuilderTable['gen8old'].overrideAbilityDesc = overrideAbilityDesc;
-		for (const id in gen8Data.Abilities) {
-			const gen8Entry = Dex.mod('gen8').abilities.get(id);
-			const rrEntry = Dex.abilities.get(id);
-			if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideAbilityDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
-			}
-		}
-	}
-
 	buf += `exports.BattleTeambuilderTable = JSON.parse('${JSON.stringify(BattleTeambuilderTable).replace(/['\\]/g, "\\$&")}');\n\n`;
 
 	fs.writeFileSync('data/teambuilder-tables.js', buf);
@@ -1170,16 +1114,7 @@ function sortObj(obj) {
 process.stdout.write("Building `data/pokedex.js`... ");
 
 {
-	let Pokedex = Dex.data.Pokedex;
-	let entries = Object.entries(sortObj(Pokedex));
-	entries = entries.sort((a, b) => {
-		if (a[1].num > 0 && b[1].num > 0) {
-			return a[1].num - b[1].num
-		} else {
-			return b[1].num - a[1].num
-		}
-	});
-	Pokedex = Object.fromEntries(entries);
+	const Pokedex = Dex.data.Pokedex;
 	for (const id in Pokedex) {	
 		const entry = Pokedex[id];
 		if (Dex.data.FormatsData[id]) {

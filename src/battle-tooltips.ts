@@ -736,12 +736,6 @@ class BattleTooltips {
 			if (move.flags.bite && ability === 'strongjaw') {
 				text += `<p class="movetag">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>`;
 			}
-			if (move.flags.blade && ability === 'blademaster') {
-				text += `<p class="movetag">&#x2713; Blade <small>(boosted by Blademaster)</small></p>`;
-			}
-			if (move.flags.kick && ability === 'striker') {
-				text += `<p class="movetag">&#x2713; Kick <small>(boosted by Striker)</small></p>`;
-			}
 			if ((move.recoil || move.hasCrashDamage) && ability === 'reckless') {
 				text += `<p class="movetag">&#x2713; Recoil <small>(boosted by Reckless)</small></p>`;
 			}
@@ -823,7 +817,7 @@ class BattleTooltips {
 			text += '<p><small>HP:</small> ' + Pokemon.getHPText(pokemon) + exacthp + (pokemon.status ? ' <span class="status ' + pokemon.status + '">' + pokemon.status.toUpperCase() + '</span>' : '');
 			if (clientPokemon) {
 				if (pokemon.status === 'tox') {
-					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Toxic Boost' || pokemon.ability === 'Magic Guard') {
+					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Magic Guard') {
 						text += ' <small>Would take if ability removed: ' + Math.floor(100 / 16 * Math.min(clientPokemon.statusData.toxicTurns + 1, 15)) + '%</small>';
 					} else {
 						text += ' Next damage: ' + Math.floor(100 / (clientPokemon.volatiles['dynamax'] ? 32 : 16) * Math.min(clientPokemon.statusData.toxicTurns + 1, 15)) + '%';
@@ -1002,7 +996,7 @@ class BattleTooltips {
 			}
 
 			if (this.battle.gen > 2 && ability === 'quickfeet') {
-				stats.spe = Math.floor(stats.spe * 2);
+				stats.spe = Math.floor(stats.spe * 1.5);
 			}
 		}
 
@@ -1083,14 +1077,8 @@ class BattleTooltips {
 		if (ability === 'purepower' || ability === 'hugepower') {
 			stats.atk *= 2;
 		}
-		if (ability === 'felineprowess') {
-			stats.spa *= 2;
-		}
 		if (ability === 'hustle' || (ability === 'gorillatactics' && !clientPokemon?.volatiles['dynamax'])) {
 			stats.atk = Math.floor(stats.atk * 1.5);
-		}
-		if (ability === 'sagepower' && !clientPokemon?.volatiles['dynamax']) {
-			stats.spa = Math.floor(stats.spa * 1.5);
 		}
 		if (weather) {
 			if (this.battle.gen >= 4 && this.pokemonHasType(pokemon, 'Rock') && weather === 'sandstorm') {
@@ -1107,9 +1095,16 @@ class BattleTooltips {
 					if (ability === 'solarpower') {
 						stats.spa = Math.floor(stats.spa * 1.5);
 					}
-					if (ability === 'flowergift' && (species === 'Cherrim' || this.battle.gen <= 4)) {
-						stats.atk = Math.floor(stats.atk * 1.5);
-						stats.spe = Math.floor(stats.spe * 1.5);
+					let allyActive = clientPokemon?.side.active;
+					if (allyActive) {
+						for (const ally of allyActive) {
+							if (!ally || ally.fainted) continue;
+							let allyAbility = this.getAllyAbility(ally);
+							if (allyAbility === 'Flower Gift' && (ally.getSpecies().baseSpecies === 'Cherrim' || this.battle.gen <= 4)) {
+								stats.atk = Math.floor(stats.atk * 1.5);
+								stats.spd = Math.floor(stats.spd * 1.5);
+							}
+						}
 					}
 				}
 				if (ability === 'chlorophyll' && (weather === 'sunnyday' || weather === 'desolateland')) {
@@ -1120,7 +1115,7 @@ class BattleTooltips {
 				}
 			}
 		}
-		if (ability === 'defeatist' && serverPokemon.hp <= serverPokemon.maxhp / 3) {
+		if (ability === 'defeatist' && serverPokemon.hp <= serverPokemon.maxhp / 2) {
 			stats.atk = Math.floor(stats.atk * 0.5);
 			stats.spa = Math.floor(stats.spa * 0.5);
 		}
@@ -1269,7 +1264,8 @@ class BattleTooltips {
 			maxpp = 5;
 		} else {
 			move = this.battle.dex.moves.get(moveName);
-			maxpp = move.noPPBoosts ? move.pp : Math.floor(move.pp * 8 / 5);
+			maxpp = (move.pp === 1 || move.noPPBoosts ? move.pp : move.pp * 8 / 5);
+			if (this.battle.gen < 3) maxpp = Math.min(61, maxpp);
 		}
 		const bullet = moveName.charAt(0) === '*' || move.isZ ? '<span style="color:#888">&#8226;</span>' : '&#8226;';
 		if (ppUsed === Infinity) {
@@ -1338,11 +1334,14 @@ class BattleTooltips {
 
 		let pokemonTypes = pokemon.getTypeList(serverPokemon);
 		value.reset();
-		if (move.id === 'revelationdance' || move.id === 'multiattack') {
+		if (move.id === 'revelationdance') {
 			moveType = pokemonTypes[0];
 		}
 		// Moves that require an item to change their type.
 		let item = Dex.items.get(value.itemName);
+		if (move.id === 'multiattack' && item.onMemory) {
+			if (value.itemModify(0)) moveType = item.onMemory;
+		}
 		if (move.id === 'judgment' && item.onPlate && !item.zMoveType) {
 			if (value.itemModify(0)) moveType = item.onPlate;
 		}
@@ -1437,9 +1436,6 @@ class BattleTooltips {
 			value.weatherModify(0, 'Rain Dance');
 			value.weatherModify(0, 'Primordial Sea');
 		}
-		if (pokemon.getSpecies().name === 'Dusknoir') {
-			value.itemModify(0, 'Reaper Cloth');
-		}
 		value.abilityModify(0, 'No Guard');
 		if (!value.value) return value;
 
@@ -1489,9 +1485,6 @@ class BattleTooltips {
 		} else if (value.tryAbility('Compound Eyes')) {
 			accuracyModifiers.push(5325);
 			value.abilityModify(1.3, "Compound Eyes");
-		} else if (value.tryAbility('Illuminate')) {
-			accuracyModifiers.push(4915);
-			value.abilityModify(1.2, "Illuminate");
 		}
 
 		if (value.tryItem('Wide Lens')) {
@@ -1674,23 +1667,6 @@ class BattleTooltips {
 
 			value.setRange(min, max);
 		}
-		if (move.id === 'sonicslash' && target) {
-			let [minSpe, maxSpe] = this.getSpeedRange(target);
-			let minRatio = (modifiedStats.spe / maxSpe);
-			let maxRatio = (modifiedStats.spe / minSpe);
-			let min;
-			let max;
-
-			if (minRatio >= 3) min = 140;
-			else if (minRatio >= 2) min = 120;
-			else min = 80;
-
-			if (maxRatio >= 3) max = 140;
-			else if (maxRatio >= 2) max = 120;
-			else max = 80;
-
-			value.setRange(min, max);
-		}
 		if (move.id === 'gyroball' && target) {
 			let [minSpe, maxSpe] = this.getSpeedRange(target);
 			let min = (Math.floor(25 * minSpe / modifiedStats.spe) || 1);
@@ -1774,10 +1750,11 @@ class BattleTooltips {
 		}
 		if (move.flags['sound']) {
 			value.abilityModify(1.3, "Punk Rock");
-			value.abilityModify(1.2, "Liquid Voice");
 		}
 		if (target) {
-			if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
+			if (["MF", "FM"].includes(pokemon.gender + target.gender)) {
+				value.abilityModify(0.75, "Rivalry");
+			} else if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
 				value.abilityModify(1.25, "Rivalry");
 			}
 		}
@@ -1799,13 +1776,7 @@ class BattleTooltips {
 			}
 		}
 		if (move.flags['punch']) {
-			value.abilityModify(1.3, 'Iron Fist');
-		}
-		if (move.flags['blade']) {
-			value.abilityModify(1.2, 'Blademaster');
-		}
-		if (move.flags['kick']) {
-			value.abilityModify(1.3, 'Striker');
+			value.abilityModify(1.2, 'Iron Fist');
 		}
 		if (move.recoil || move.hasCrashDamage) {
 			value.abilityModify(1.2, 'Reckless');
@@ -1928,13 +1899,13 @@ class BattleTooltips {
 	static orbUsers: {[speciesForme: string]: string} = {
 		'Latias': 'Soul Dew',
 		'Latios': 'Soul Dew',
-		//'Dialga': 'Adamant Orb',
+		'Dialga': 'Adamant Orb',
 		'Palkia': 'Lustrous Orb',
 		'Giratina': 'Griseous Orb',
 	};
 	static orbTypes: {[itemName: string]: TypeName} = {
 		'Soul Dew': 'Psychic',
-		//'Adamant Orb': 'Steel',
+		'Adamant Orb': 'Steel',
 		'Lustrous Orb': 'Water',
 		'Griseous Orb': 'Ghost',
 	};
@@ -2037,15 +2008,9 @@ class BattleTooltips {
 				const species = this.battle.dex.species.get(speciesForme);
 				if (species.exists && species.abilities) {
 					abilityData.possibilities = [species.abilities['0']];
-					if (species.abilities['1'] && !abilityData.possibilities.includes(species.abilities['1'])) {
-						abilityData.possibilities.push(species.abilities['1']);
-					}
-					if (species.abilities['H'] && !abilityData.possibilities.includes(species.abilities['H'])) {
-						abilityData.possibilities.push(species.abilities['H']);
-					}
-					if (species.abilities['S'] && !abilityData.possibilities.includes(species.abilities['S'])) {
-						abilityData.possibilities.push(species.abilities['S']);
-					}
+					if (species.abilities['1']) abilityData.possibilities.push(species.abilities['1']);
+					if (species.abilities['H']) abilityData.possibilities.push(species.abilities['H']);
+					if (species.abilities['S']) abilityData.possibilities.push(species.abilities['S']);
 				}
 			}
 		}
