@@ -3317,7 +3317,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	morningsun: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 700, 0.5);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 700, 0.5);
 			scene.showEffect('wisp', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -3370,7 +3370,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	moonlight: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
 			scene.showEffect('shine', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -3442,7 +3442,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	cosmicpower: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.6);
 			scene.showEffect('wisp', {
 				x: attacker.x + 40,
 				y: attacker.y - 40,
@@ -4923,7 +4923,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	seismictoss: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 500, 0.6, 300);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 500, 0.6, 300);
 			scene.showEffect('wisp', {
 				x: defender.x,
 				y: defender.y + 10,
@@ -7474,7 +7474,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	meteormash: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.4);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.4);
 			scene.showEffect(attacker.sp, {
 				x: attacker.leftof(20),
 				y: attacker.y,
@@ -16148,7 +16148,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	psystrike: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-psychicterrain.png')`, 950, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-psychicterrain.png')`, 950, 0.6);
 			scene.showEffect('poisonwisp', {
 				x: defender.x - 100,
 				y: defender.y,
@@ -16898,7 +16898,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	moonblast: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
 			scene.showEffect('mistball', {
 				x: attacker.x,
 				y: attacker.y,
@@ -17162,7 +17162,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	wish: {
 		anim(scene, [attacker]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
 
 			scene.showEffect('wisp', {
 				x: attacker.x,
@@ -17176,7 +17176,7 @@ export const BattleMoveAnims: AnimTable = {
 			}, 'accel');
 		},
 		residualAnim(scene, [attacker]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 600, 0.4);
 
 			scene.showEffect('wisp', {
 				x: attacker.x,
@@ -18253,7 +18253,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	dracometeor: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1100, 0.8);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1100, 0.8);
 			scene.showEffect('flareball', {
 				x: defender.leftof(-200),
 				y: defender.y + 175,
@@ -19697,7 +19697,7 @@ export const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
 
 			for (let i = 0; i < 5; i++) {
 				scene.showEffect('energyball', {
@@ -19841,7 +19841,7 @@ export const BattleMoveAnims: AnimTable = {
 			let ystep = 20;
 			let zstep = 0;
 
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sunnyday.jpg')`, 900, 0.5);
 
 			scene.showEffect('sword', {
 				x: attacker.leftof(10),
@@ -20126,7 +20126,7 @@ export const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-sandstorm.png')`, 900, 0.5);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-sandstorm.png')`, 900, 0.5);
 
 			for (let i = 0; i < 5; i++) {
 				scene.showEffect('mudwisp', {
@@ -20326,7 +20326,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	sheercold: { // Reminder: Improve this later
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
 			scene.showEffect('icicle', {
 				x: defender.x,
 				y: defender.y,
@@ -20344,7 +20344,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	glaciallance: {
 		anim(scene, [attacker, ...defenders]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-icecave.jpg')`, 1000, 0.6);
 			for (const defender of defenders) {
 				scene.showEffect('icicle', {
 					x: defender.x,
@@ -22659,7 +22659,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	dragonascent: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.7);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 1000, 0.7);
 			scene.showEffect('iceball', {
 				x: attacker.leftof(-25),
 				y: attacker.y + 250,
@@ -26150,7 +26150,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	plasmafists: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 1);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 1);
 			scene.backgroundEffect('#000000', 1000, 0.6);
 			scene.backgroundEffect('#FFFFFF', 300, 0.6, 1000);
 			scene.showEffect('electroball', {
@@ -30221,7 +30221,7 @@ export const BattleMoveAnims: AnimTable = {
 	oceanicoperetta: {
 		anim(scene, [attacker, defender]) {
 			scene.backgroundEffect('linear-gradient(#000000 20%, #0000DD)', 2700, 0.4);
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-raindance.jpg')`, 700, 0.2, 2000);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-raindance.jpg')`, 700, 0.2, 2000);
 			scene.showEffect('iceball', {
 				x: attacker.x,
 				y: attacker.y + 120,
@@ -30544,7 +30544,7 @@ export const BattleMoveAnims: AnimTable = {
 	},
 	splinteredstormshards: {
 		anim(scene, [attacker, defender]) {
-			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2700, 0.8, 300);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2700, 0.8, 300);
 			scene.backgroundEffect('linear-gradient(#FFC720 15%, #421800)', 2700, 0.7);
 			scene.backgroundEffect('#ffffff', 400, 0.6, 2500);
 			scene.showEffect('rock3', {
@@ -31267,7 +31267,7 @@ export const BattleMoveAnims: AnimTable = {
 			}
 			const defender = defenders[1] || defenders[0];
 			scene.backgroundEffect('#000000', 300, 0.9);
-			scene.backgroundEffect(`url('http://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 0.7, 300);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/sprites/gen6bgs/bg-earthycave.jpg')`, 2000, 0.7, 300);
 			scene.backgroundEffect('linear-gradient(#FB5C1E 20%, #3F1D0F', 2000, 0.6, 300);
 			scene.backgroundEffect('#FFFFFF', 1000, 0.9, 2200);
 			scene.showEffect('shine', {
@@ -31939,8 +31939,8 @@ export const BattleMoveAnims: AnimTable = {
 			let ystep = (defender.x - 200 - attacker.x) / 5;
 			let zstep = (defender.z - attacker.z) / 5;
 
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/weather-trickroom.png')`, 700, 1);
-			scene.backgroundEffect(`url('http://${Config.routes.client}/fx/bg-space.jpg')`, 2500, 1, 700);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/weather-trickroom.png')`, 700, 1);
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 2500, 1, 700);
 			scene.backgroundEffect('#FFFFFF', 1500, 1, 2500);
 
 			scene.showEffect('flareball', {
