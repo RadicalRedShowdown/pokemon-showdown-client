@@ -19,7 +19,7 @@ child_process.execSync('git pull', {cwd: 'data/pokemon-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/pokemon-showdown'});
 console.log("DONE");
 
-const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8pla');
+const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8ie');
 const Tags = require('../data/pokemon-showdown/.data-dist/tags').Tags;
 const toID = Dex.toID;
 process.stdout.write("Loading gen 6 data... ");
@@ -343,7 +343,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (isStadium) genStr += 'stadium' + (genNum > 1 ? genNum : '');
 			return genStr;
 		})();
-		const mod = gen === 'gen8' ? 'gen8pla' : gen;
+		const mod = gen === 'gen8' ? 'gen8ie' : gen;
 		// process.stdout.write("" + gen + (isDoubles ? " doubles" : "") + "... ");
 		const pokemon = Object.keys(Dex.data.Pokedex);
 		pokemon.sort();
@@ -1115,7 +1115,7 @@ process.stdout.write("Building `data/pokedex.js`... ");
 
 {
 	const Pokedex = Dex.data.Pokedex;
-	for (const id in Pokedex) {	
+	for (const id in Pokedex) {
 		const entry = Pokedex[id];
 		if (Dex.data.FormatsData[id]) {
 			// console.log('formatsentry:' + id);
