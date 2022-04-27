@@ -363,6 +363,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 					].map(toID);
 					if (species.isNonstandard && !['Past', 'Gigantamax'].includes(species.isNonstandard)) return 'Illegal';
 					if (unobtainables.includes(species.id)) return 'Illegal';
+					/*
 					const uu = Dex.formats.get('gen8nationaldexuu');
 					const ou = Dex.formats.get('gen8nationaldex');
 					if (Dex.formats.getRuleTable(ou).isBannedSpecies(species)) return 'Uber';
@@ -383,6 +384,15 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 						}
 						return 'RU';
 					}
+					*/
+					if (species.nfe) {
+						if (species.prevo) {
+							return 'NFE';
+						} else {
+							return 'LC';
+						}
+					}
+					return 'OU';
 				}
 				if (isMetBattle) {
 					let tier = species.tier;
