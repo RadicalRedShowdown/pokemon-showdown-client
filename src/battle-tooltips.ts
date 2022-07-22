@@ -1430,6 +1430,14 @@ class BattleTooltips {
 			value.set(0, "Poison type");
 			return value;
 		}
+		if (move.id === 'willowisp' && this.battle.gen >= 6 && this.pokemonHasType(pokemon, 'Fire')) {
+			value.set(0, "Fire type");
+			return value;
+		}
+		if (move.id === 'thunderwave' && this.battle.gen >= 6 && this.pokemonHasType(pokemon, 'Electric')) {
+			value.set(0, "Electric type");
+			return value;
+		}
 		if (move.id === 'blizzard') {
 			value.weatherModify(0, 'Hail');
 		}
@@ -1588,8 +1596,8 @@ class BattleTooltips {
 			else basePower = 20;
 			value.set(basePower);
 		}
-		if (move.id === 'hex' && target?.status) {
-			value.modify(2, 'Hex + status');
+		if (['hex', 'barbbarrage', 'bittermalice', 'infernalparade'].includes(move.id) && target?.status) {
+			value.modify(2, move.name + ' + status');
 		}
 		if (move.id === 'punishment' && target) {
 			let boostCount = 0;
@@ -1759,6 +1767,9 @@ class BattleTooltips {
 		}
 		if (this.battle.gen > 2 && serverPokemon.status === 'brn' && move.id !== 'facade' && move.category === 'Physical') {
 			if (!value.tryAbility("Guts")) value.modify(0.5, 'Burn');
+		}
+		if (this.battle.gen > 2 && serverPokemon.status === 'frz' && move.id !== 'facade' && move.category === 'Special') {
+			value.modify(0.5, 'Frostbite');
 		}
 		if (['Rock', 'Ground', 'Steel'].includes(moveType) && this.battle.weather === 'sandstorm') {
 			if (value.tryAbility("Sand Force")) value.weatherModify(1.3, "Sandstorm", "Sand Force");
