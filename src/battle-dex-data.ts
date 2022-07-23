@@ -569,6 +569,26 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	overqwil: 1380 + 25,
 	enamorus: 1380 + 26,
 	enamorustherian: 1380 + 27,
+
+	blitzlesevii: 1416,
+	zebstrikasevii: 1416 + 1,
+	doduosevii: 1416 + 2,
+	dodriosevii: 1416 + 3,
+	teddiursasevii: 1416 + 4,
+	ursaringsevii: 1416 + 5,
+	carnivinesevii: 1416 + 6,
+	mantykesevii: 1416 + 7,
+	mantinesevii: 1416 + 8,
+	feebassevii: 1416 + 9,
+	miloticsevii: 1416 + 10,
+	claunchersevii: 1416 + 11,
+	clawitzersevii: 1416 + 12,
+	sizzlipedesevii: 1416 + 13,
+	centiskorchsevii: 1416 + 14,
+	centiskorchseviimega: 1416 + 15,
+	wishiwashisevii: 1416 + 16,
+	wishiwashiseviischool: 1416 + 17,
+	dhelmisesevii: 1416 + 18,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
