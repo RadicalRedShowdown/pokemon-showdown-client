@@ -2000,7 +2000,7 @@ class BattleTooltips {
 		// Gems
 		if (BattleTooltips.noGemMoves.includes(moveName)) return value;
 		if (itemName === moveType + ' Gem') {
-			value.itemModify(this.battle.gen < 6 ? 1.5 : 1.3);
+			value.itemModify(1.5);
 			return value;
 		}
 
