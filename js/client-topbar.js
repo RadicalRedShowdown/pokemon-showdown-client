@@ -700,14 +700,19 @@
 
 			buf += '<div class="avatarlist">';
 			var avatarList = [
-				'brendan', 'gary1', 'gary2', 'gary3', 'may', 'arianaarcher', 'brock', 'giovanni', 'misty', 'surge', 'erika', 'sabrina', 'koga', 'absol',
-				'acetrainercenti', 'acetrainersandaconda', 'alcremie', 'allistermimikyu', 'beautyappletun', 'bedegapidash', 'bikerarbok', 'blackbelturshifur',
-				'blackbelturshifus', 'blaine', 'boltund', 'breedersnorlax', 'bruno1', 'bruno2', 'bugcatcherbutterfree', 'bugsy', 'chuck', 'cinderace', 'clair', 'coalossal',
-				'copperajah', 'delphox', 'electrode', 'falkner', 'farfectchd', 'flintinfernape', 'flygon', 'grimmsley', 'hopdubwool', 'jasmine', 'jessie',
-				'jojofan', 'kingler', 'klaraglowking', 'kukuimoltresg', 'lance', 'leondragapult', 'lorelei', 'mayempoleon', 'morty', 'melonygalarzen', 'ingochandelure',
-				'emmeteelektross', 'mrmime', 'mudkipz', 'mudsdale', 'nursejoy', 'oleanasalazzle', 'peonycalyrex', 'pryce', 'roseescavalier', 'roserade',
-				'sabrinamismagius', 'scientistelectivire', 'shielbertzamazenta', 'soniayamper', 'sordwardzacian', 'soup', 'stevencelesteela', 'swimmerfloatzel',
-				'swimmerlapras', 'veterandarkrai', 'whitney', 'zinnia', 'zinnia2', 'zinnia3',
+				'arcaninehisui', 'audinomega', 'beedrillmega', 'bewear', 'blissey', 'centiskorchseviimega', 'charizardmegax',
+				'charizardmegay', 'cinderace', 'clawitzerseviian', 'corviknight', 'darmanitangalarzen', 'decidueyehisui', 'delphox',
+				'deoxys', 'dodrioseviian', 'donphan', 'dragonite', 'drednawmega', 'eiscue', 'electivire', 'enamorus',
+				'espeon', 'flareon', 'fuecoco', 'garchompmega', 'gastrodon', 'gengar', 'glaceon', 'goodrahisui', 'greninja',
+				'hoopaunbound', 'houndoommega', 'incineroar', 'infernape', 'jirachi', 'jolteon', 'kartana', 'kinglermega',
+				'koraidon', 'landorustherian', 'leafeon', 'lechonk', 'lucariomega', 'magearna', 'mantineseviian', 'marowakalola',
+				'marshadow', 'mawilemega', 'mew', 'mienshao', 'miloticseviian', 'miraidon', 'mismagius', 'morpeko', 'necrozma',
+				'nihilego', 'pikachu', 'pinsirmega', 'quaxly', 'qwilfish', 'qwilfishhisui', 'regice', 'regirock', 'registeel',
+				'rillaboom', 'rotomfan', 'rotomfrost', 'rotomheat', 'rotommow', 'rotomwash', 'sableyemega', 'scizormega',
+				'slowbro', 'slowking', 'slowkinggalar', 'sneasler', 'snorlax', 'spectrier', 'sprigatito', 'stakataka',
+				'sylveon', 'tapubulu', 'tapufini', 'tapukoko', 'tapulele', 'teddiursaseviian', 'torkoal', 'tornadustherian',
+				'toxtricitymega', 'tyranitar', 'umbreon', 'urshifurapid', 'vaporeon', 'victini', 'weavile', 'zebstrikaseviian',
+				'zeraora', 'zoruahisui', 'zygarde',
 			];
 			for (var i = 0; i < avatarList.length; i++) {
 				var offset = '-' + ((i % 16) * 80 + 1) + 'px -' + (Math.floor(i / 16) * 80 + 1) + 'px';
