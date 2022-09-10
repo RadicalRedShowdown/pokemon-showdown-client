@@ -732,6 +732,18 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (learnsetid === 'lycanrocdusk' || (speciesid === 'rockruff' && learnsetid === 'rockruff')) {
 			return 'rockruffdusk' as ID;
 		}
+		if (learnsetid === 'exeggutoralola' || (speciesid === 'exeggcute' && learnsetid === 'exeggcute')) {
+			return 'exeggcutealola' as ID;
+		}
+		if (learnsetid === 'marowakalola' || (speciesid === 'cubone' && learnsetid === 'cubone')) {
+			return 'cubonealola' as ID;
+		}
+		if (learnsetid === 'weezinggalar' || (speciesid === 'koffing' && learnsetid === 'koffing')) {
+			return 'koffinggalar' as ID;
+		}
+		if (learnsetid === 'mrmimegalar' || (speciesid === 'mimejr' && learnsetid === 'mimejr')) {
+			return 'mimejrgalar' as ID;
+		}
 		const lsetSpecies = this.dex.species.get(learnsetid);
 		if (!lsetSpecies.exists) return '' as ID;
 
