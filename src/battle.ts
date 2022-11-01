@@ -2837,6 +2837,12 @@ export class Battle {
 				this.scene.wait(700);
 				this.activateAbility(target, "Mummy", true);
 				break;
+			case 'pheonixdown':
+				poke.fainted = false;
+				for (let i = 0; i < poke.moveTrack.length; i++) {
+					poke.moveTrack[i][1] = 0;
+				}
+				break;
 
 			// item activations
 			case 'leppaberry':
