@@ -749,6 +749,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 
 		if (lsetSpecies.id === 'gastrodoneast') return 'gastrodon' as ID;
 		if (lsetSpecies.id === 'pumpkaboosuper') return 'pumpkaboo' as ID;
+		if (lsetSpecies.id === 'sinisteaantique') return 'sinistea' as ID;
 
 		const next = lsetSpecies.battleOnly || lsetSpecies.changesFrom || lsetSpecies.prevo;
 		if (next) return toID(next);
@@ -792,7 +793,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		return false;
 	}
 	getTier(pokemon: Species) {
-		if (this.formatType === 'metronome' || this.formatType === 'natdex') {
+		if (this.formatType === 'metronome') {
 			return pokemon.num >= 0 ? String(pokemon.num) : pokemon.tier;
 		}
 		let table = window.BattleTeambuilderTable;
@@ -804,6 +805,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			this.formatType === 'nfe' ? `gen${gen}nfe` :
 			this.formatType === 'dlc1' ? 'gen8dlc1' :
 			this.formatType === 'dlc1doubles' ? 'gen8dlc1doubles' :
+			this.formatType === 'natdex' ? 'natdex' :
 			this.formatType === 'stadium' ? `gen${gen}stadium${gen > 1 ? gen : ''}` :
 			`gen${gen}`;
 		if (table && table[tableKey]) {
@@ -933,7 +935,9 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		let slices: {[k: string]: number} = table.formatSlices;
 		if (format === 'ubers' || format === 'uber') tierSet = tierSet.slice(slices.Uber);
 		else if (isVGCOrBS) {
-			if (
+			if (format.endsWith('series13')) {
+				// Show Mythicals
+			} else if (
 				format === 'vgc2010' || format === 'vgc2016' || format.startsWith('vgc2019') ||
 				format === 'vgc2022' || format.endsWith('series10') || format.endsWith('series11')
 			) {
@@ -1230,14 +1234,14 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		if (dex.gen === 1) {
 			// Usually not useless for Gen 1
 			if ([
-				'acidarmor', 'amnesia', 'barrier', 'bind', 'blizzard', 'clamp', 'confuseray', 'counter', 'firespin', 'hyperbeam', 'mirrormove', 'pinmissile', 'razorleaf', 'sing', 'slash', 'sludge', 'twineedle', 'wrap',
+				'acidarmor', 'amnesia', 'barrier', 'bind', 'blizzard', 'clamp', 'confuseray', 'counter', 'firespin', 'growth', 'headbutt', 'hyperbeam', 'mirrormove', 'pinmissile', 'razorleaf', 'sing', 'slash', 'sludge', 'twineedle', 'wrap',
 			].includes(id)) {
 				return true;
 			}
 
 			// Usually useless for Gen 1
 			if ([
-				'disable', 'firepunch', 'icepunch', 'leechseed', 'quickattack', 'roar', 'thunderpunch', 'toxic', 'triattack', 'whirlwind',
+				'disable', 'haze', 'leechseed', 'quickattack', 'roar', 'thunder', 'toxic', 'triattack', 'waterfall', 'whirlwind',
 			].includes(id)) {
 				return false;
 			}
@@ -1247,15 +1251,28 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			case 'bubblebeam': return (!moves.includes('surf') && !moves.includes('blizzard'));
 			case 'doubleedge': return !moves.includes('bodyslam');
 			case 'doublekick': return !moves.includes('submission');
+			case 'firepunch': return !moves.includes('fireblast');
 			case 'megadrain': return !moves.includes('razorleaf') && !moves.includes('surf');
 			case 'megakick': return !moves.includes('hyperbeam');
 			case 'reflect': return !moves.includes('barrier') && !moves.includes('acidarmor');
+			case 'stomp': return !moves.includes('headbutt');
 			case 'submission': return !moves.includes('highjumpkick');
+			case 'thunderpunch': return !moves.includes('thunderbolt');
+			case 'triattack': return !moves.includes('bodyslam');
+			}
+			// Useful and Useless moves for Stadium OU, which changes many game mechanics.
+			if (this.formatType === 'stadium') {
+				if (['doubleedge', 'focusenergy', 'haze'].includes(id)) return true;
+				if (['hyperbeam', 'sing', 'hypnosis'].includes(id)) return false;
+				switch (id) {
+				case 'fly': return !moves.includes('drillpeck');
+				case 'dig': return !moves.includes('earthquake');
+				}
 			}
 		}
 
 		if (this.formatType === 'letsgo') {
-			if (id === 'megadrain') return true;
+			if (['megadrain', 'teleport'].includes(id)) return true;
 		}
 
 		if (this.formatType === 'metronome') {
@@ -1427,8 +1444,8 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		const isHackmons = (format.includes('hackmons') || format.endsWith('bh'));
 		const isSTABmons = (format.includes('stabmons') || format === 'staaabmons');
 		const isTradebacks = format.includes('tradebacks');
-		const galarBornLegality = ((/^battle(stadium|festival)/.test(format) || format.startsWith('vgc')) &&
-			this.dex.gen === 8);
+		const regionBornLegality = dex.gen >= 6 &&
+			/^battle(spot|stadium|festival)/.test(format) || format.startsWith('vgc');
 
 		const abilityid = this.set ? toID(this.set.ability) : '' as ID;
 		const itemid = this.set ? toID(this.set.item) : '' as ID;
@@ -1448,10 +1465,8 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 				for (let moveid in learnset) {
 					let learnsetEntry = learnset[moveid];
 					const move = dex.moves.get(moveid);
-					/* if (requirePentagon && learnsetEntry.indexOf('p') < 0) {
-						continue;
-					} */
-					if (galarBornLegality && !learnsetEntry.includes('g')) {
+					const minGenCode: {[gen: number]: string} = {6: 'p', 7: 'q', 8: 'g'};
+					if (regionBornLegality && !learnsetEntry.includes(minGenCode[dex.gen])) {
 						continue;
 					}
 					if (
@@ -1527,7 +1542,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 					if (pokemon.battleOnly && typeof pokemon.battleOnly === 'string') {
 						species = dex.species.get(pokemon.battleOnly);
 					}
-					const excludedForme = (s: Species) => ['Alola', 'Alola-Totem', 'Galar', 'Galar-Zen'].includes(s.forme);
+					const excludedForme = (s: Species) => ['Alola', 'Alola-Totem', 'Galar', 'Galar-Zen', 'Hisui', 'Sevii'].includes(s.forme);
 					if (baseSpecies.otherFormes && !['Wormadam', 'Urshifu'].includes(baseSpecies.baseSpecies)) {
 						if (!excludedForme(species)) speciesTypes.push(...baseSpecies.types);
 						for (const formeName of baseSpecies.otherFormes) {

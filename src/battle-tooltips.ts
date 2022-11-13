@@ -1136,7 +1136,12 @@ class BattleTooltips {
 		if (ability === 'marvelscale' && pokemon.status) {
 			stats.def = Math.floor(stats.def * 1.5);
 		}
-		if (item === 'eviolite' && Dex.species.get(pokemon.speciesForme).evos) {
+		const isNFE = Dex.species.get(serverPokemon.speciesForme).evos?.some(evo => {
+			const evoSpecies = Dex.species.get(evo);
+			return !evoSpecies.isNonstandard ||
+					evoSpecies.isNonstandard === Dex.species.get(serverPokemon.speciesForme)?.isNonstandard;
+		});
+		if (item === 'eviolite' && isNFE) {
 			stats.def = Math.floor(stats.def * 1.5);
 			stats.spd = Math.floor(stats.spd * 1.5);
 		}
@@ -1269,7 +1274,8 @@ class BattleTooltips {
 			maxpp = 5;
 		} else {
 			move = this.battle.dex.moves.get(moveName);
-			maxpp = move.noPPBoosts ? move.pp : Math.floor(move.pp * 8 / 5);
+			maxpp = (move.pp === 1 || move.noPPBoosts ? move.pp : move.pp * 8 / 5);
+			if (this.battle.gen < 3) maxpp = Math.min(61, maxpp);
 		}
 		const bullet = moveName.charAt(0) === '*' || move.isZ ? '<span style="color:#888">&#8226;</span>' : '&#8226;';
 		if (ppUsed === Infinity) {
@@ -1293,11 +1299,17 @@ class BattleTooltips {
 	 * Calculates possible Speed stat range of an opponent
 	 */
 	getSpeedRange(pokemon: Pokemon): [number, number] {
-		if (pokemon.volatiles.transform) {
-			pokemon = pokemon.volatiles.transform[1];
+		const tr = Math.trunc || Math.floor;
+		const species = pokemon.getSpecies();
+		let baseSpe = species.baseStats.spe;
+		if (this.battle.rules['Scalemons Mod']) {
+			const bstWithoutHp = species.bst - species.baseStats.hp;
+			const scale = 600 - species.baseStats.hp;
+			baseSpe = tr(baseSpe * scale / bstWithoutHp);
+			if (baseSpe < 1) baseSpe = 1;
+			if (baseSpe > 255) baseSpe = 255;
 		}
-		let level = pokemon.level;
-		let baseSpe = pokemon.getSpecies().baseStats['spe'];
+		let level = pokemon.volatiles.transform?.[4] || pokemon.level;
 		let tier = this.battle.tier;
 		let gen = this.battle.gen;
 		let isRandomBattle = tier.includes('Random Battle') ||
@@ -1309,7 +1321,6 @@ class BattleTooltips {
 
 		let min;
 		let max;
-		const tr = Math.trunc || Math.floor;
 		if (tier.includes("Let's Go")) {
 			min = tr(tr(tr(2 * baseSpe * level / 100 + 5) * minNature) * tr((70 / 255 / 10 + 1) * 100) / 100);
 			max = tr(tr(tr((2 * baseSpe + maxIv) * level / 100 + 5) * maxNature) * tr((70 / 255 / 10 + 1) * 100) / 100);
@@ -1394,26 +1405,36 @@ class BattleTooltips {
 		const noTypeOverride = [
 			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball',
 		];
-		const allowTypeOverride = !noTypeOverride.includes(move.id);
-
-		if (allowTypeOverride && category !== 'Status' && !move.isZ && !move.id.startsWith('hiddenpower')) {
-			if (moveType === 'Normal') {
-				if (value.abilityModify(0, 'Aerilate')) moveType = 'Flying';
-				if (value.abilityModify(0, 'Galvanize')) moveType = 'Electric';
-				if (value.abilityModify(0, 'Pixilate')) moveType = 'Fairy';
-				if (value.abilityModify(0, 'Refrigerate')) moveType = 'Ice';
+		if (!noTypeOverride.includes(move.id)) {
+			if (this.battle.rules['Revelationmons Mod']) {
+				const [types] = pokemon.getTypes(serverPokemon);
+				for (let i = 0; i < types.length; i++) {
+					if (serverPokemon.moves[i] && move.id === toID(serverPokemon.moves[i])) {
+						moveType = types[i];
+					}
+				}
 			}
-			if (value.abilityModify(0, 'Normalize')) moveType = 'Normal';
-		}
-		// There aren't any max moves with the sound flag, but if there were, Liquid Voice would make them water type
-		const isSound = !!(
-			forMaxMove ?
-			this.getMaxMoveFromType(moveType, forMaxMove !== true && forMaxMove || undefined) : move
-		).flags['sound'];
 
-		if (allowTypeOverride && isSound && value.abilityModify(0, 'Liquid Voice')) {
-			moveType = 'Water';
+			if (category !== 'Status' && !move.isZ && !move.id.startsWith('hiddenpower')) {
+				if (moveType === 'Normal') {
+					if (value.abilityModify(0, 'Aerilate')) moveType = 'Flying';
+					if (value.abilityModify(0, 'Galvanize')) moveType = 'Electric';
+					if (value.abilityModify(0, 'Pixilate')) moveType = 'Fairy';
+					if (value.abilityModify(0, 'Refrigerate')) moveType = 'Ice';
+				}
+				if (value.abilityModify(0, 'Normalize')) moveType = 'Normal';
+			}
+
+			// There aren't any max moves with the sound flag, but if there were, Liquid Voice would make them water type
+			const isSound = !!(
+				forMaxMove ?
+				this.getMaxMoveFromType(moveType, forMaxMove !== true && forMaxMove || undefined) : move
+			).flags['sound'];
+			if (isSound && value.abilityModify(0, 'Liquid Voice')) {
+				moveType = 'Water';
+			}
 		}
+
 		if (this.battle.gen <= 3 && category !== 'Status') {
 			category = Dex.getGen3Category(moveType);
 		}
@@ -2129,6 +2150,8 @@ interface PokemonSet {
 	pokeball?: string;
 	/** Defaults to the type of your Hidden Power in Moves, otherwise Dark */
 	hpType?: string;
+	/** Defaults to 10 */
+	dynamaxLevel?: number;
 	/** Defaults to no (can only be yes for certain Pokemon) */
 	gigantamax?: boolean;
 }

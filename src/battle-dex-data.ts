@@ -483,6 +483,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	chromera: 1308 + 31,
 	venomicon: 1308 + 32,
 	venomiconepilogue: 1308 + 33,
+	saharaja: 1308 + 34,
 
 	syclar: 1344 + 0,
 	embirch: 1344 + 1,
@@ -795,7 +796,7 @@ const BattleAvatarNumbers: {[k: string]: string} = {
 	92: 'palmer',
 	93: 'thorton',
 	94: 'buck',
-	95: 'darach',
+	95: 'darach-caitlin',
 	96: 'marley',
 	97: 'mira',
 	98: 'cheryl',
@@ -1418,6 +1419,7 @@ class Species implements Effect {
 	readonly baseStats: Readonly<{
 		hp: number, atk: number, def: number, spa: number, spd: number, spe: number,
 	}>;
+	readonly bst: number;
 	readonly weightkg: number;
 	readonly items: Readonly<{
 		5: string, 50: string,
@@ -1445,6 +1447,7 @@ class Species implements Effect {
 	readonly tier: string;
 	readonly isTotem: boolean;
 	readonly isMega: boolean;
+	readonly cannotDynamax: boolean;
 	readonly canGigantamax: boolean;
 	readonly isPrimal: boolean;
 	readonly battleOnly: string | string[] | undefined;
@@ -1472,6 +1475,8 @@ class Species implements Effect {
 		this.types = data.types || ['???'];
 		this.abilities = data.abilities || {0: "No Ability"};
 		this.baseStats = data.baseStats || {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+		this.bst = this.baseStats.hp + this.baseStats.atk + this.baseStats.def +
+			this.baseStats.spa + this.baseStats.spd + this.baseStats.spe;
 		this.weightkg = data.weightkg || 0;
 		this.items = data.items || {5: "None", 50: "None"};
 
@@ -1496,6 +1501,7 @@ class Species implements Effect {
 
 		this.isTotem = false;
 		this.isMega = !!data.isMega || !!(this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid));
+		this.cannotDynamax = !!data.cannotDynamax;
 		this.canGigantamax = !!data.canGigantamax;
 		this.isPrimal = !!(this.forme && ['-primal', '-eternamax'].includes(this.formeid));
 		this.battleOnly = data.battleOnly || undefined;
