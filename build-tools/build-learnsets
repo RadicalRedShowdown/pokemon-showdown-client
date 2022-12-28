@@ -18,7 +18,7 @@ const thisFile = __filename;
 const thisDir = __dirname;
 const rootDir = path.resolve(thisDir, '..');
 
-const Dex = require('../data/pokemon-showdown/.sim-dist/dex').Dex.mod('gen8rr');
+const Dex = require('../data/pokemon-showdown/dist/sim/dex').Dex.mod('gen8rr');
 const toID = Dex.toID;
 
 function updateLearnsets(callback) {
