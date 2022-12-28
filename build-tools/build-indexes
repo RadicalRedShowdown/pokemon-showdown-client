@@ -937,7 +937,11 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	// Past gen table
 	//
 
-	for (const genNum of [8, 7, 6, 5, 4, 3, 2, 1]) {
+	BattleTeambuilderTable['gen8'].overrideSpeciesData = {};
+	BattleTeambuilderTable['gen8'].overrideMoveData = {};
+	BattleTeambuilderTable['gen8'].overrideAbilityData = {};
+	BattleTeambuilderTable['gen8'].overrideItemDesc = {};
+	for (const genNum of [7, 6, 5, 4, 3, 2, 1]) {
 		const gen = 'gen' + genNum;
 		const nextGen = 'gen' + (genNum + 1);
 		const genDex = Dex.mod(gen);
