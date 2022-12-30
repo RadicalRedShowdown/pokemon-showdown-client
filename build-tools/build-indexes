@@ -1153,14 +1153,10 @@ process.stdout.write("Building `data/pokedex.js`... ");
 	});
 	Pokedex = Object.fromEntries(entries);
 	for (const id in Pokedex) {	
-		const entry = Pokedex[id];
-		if (Dex.data.FormatsData[id]) {
-			// console.log('formatsentry:' + id);
-			const formatsEntry = Dex.data.FormatsData[id];
-			if (formatsEntry.tier) entry.tier = formatsEntry.tier;
-			if (formatsEntry.isNonstandard) entry.isNonstandard = formatsEntry.isNonstandard;
-			if (formatsEntry.unreleasedHidden) entry.unreleasedHidden = formatsEntry.unreleasedHidden;
-		}
+		const species = Dex.species.get(id);
+		if (species.tier) Pokedex[id].tier = species.tier;
+		if (species.isNonstandard) Pokedex[id].isNonstandard = species.isNonstandard;
+		if (species.unreleasedHidden) Pokedex[id].unreleasedHidden = species.unreleasedHidden;
 	}
 	const buf = 'exports.BattlePokedex = ' + es3stringify(Pokedex) + ';';
 	fs.writeFileSync('data/pokedex.js', buf);
