@@ -59,14 +59,11 @@ PS.connection = new PSConnection();
 
 const PSLoginServer = new class {
 	query(data: PostData): Promise<{[k: string]: any} | null> {
-		let url = '/~~' + PS.server.id + '/action.php';
-		if (location.pathname.endsWith('.html')) {
-			url = 'https://play.pokemonshowdown.com' + url;
+		let url = 'https://play.pokemonshowdown.com/~~' + PS.server.id + '/action.php';
+		// @ts-ignore
+		if (typeof POKEMON_SHOWDOWN_TESTCLIENT_KEY === 'string') {
 			// @ts-ignore
-			if (typeof POKEMON_SHOWDOWN_TESTCLIENT_KEY === 'string') {
-				// @ts-ignore
-				data.sid = POKEMON_SHOWDOWN_TESTCLIENT_KEY.replace(/\%2C/g, ',');
-			}
+			data.sid = POKEMON_SHOWDOWN_TESTCLIENT_KEY.replace(/\%2C/g, ',');
 		}
 		return Net(url).get({method: data ? 'POST' : 'GET', body: data}).then(
 			res => res ? JSON.parse(res.slice(1)) : null
