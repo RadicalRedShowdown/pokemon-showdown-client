@@ -50,8 +50,11 @@
 				buf += '<p><button class="button mainmenu1 big" name="search"><strong>Battle!</strong><br /><small>Find a random opponent</small></button></p></form></div>';
 			}
 
-			buf += '<div class="menugroup"><p><button class="button mainmenu2" name="joinRoom" value="teambuilder">Teambuilder</button></p>';
-			buf += '<p><button class="button mainmenu3" name="joinRoom" value="ladder">Ladder</button></p></div>';
+			buf += '<div class="menugroup">';
+			buf += '<p><button class="button mainmenu2" name="joinRoom" value="teambuilder">Teambuilder</button></p>';
+			buf += '<p><button class="button mainmenu3" name="joinRoom" value="ladder">Ladder</button></p>';
+			buf += '<p><button class="button mainmenu4" name="send" value="/smogtours">Tournaments</button></p>';
+			buf += '</div>';
 
 			buf += '<div class="menugroup"><p><button class="button mainmenu4 onlineonly disabled" name="joinRoom" value="battles">Watch a battle</button></p>';
 			buf += '<p><button class="button mainmenu5 onlineonly disabled" name="finduser">Find a user</button></p></div>';
@@ -884,7 +887,7 @@
 			if (format) {
 				var formatParts = format.split('@@@', 2);
 				formatParts[0] = toID(formatParts[0]);
-				if (!formatParts[0].startsWith('gen')) formatParts[0] = 'gen8' + formatParts[0];
+				if (!formatParts[0].startsWith('gen')) formatParts[0] = 'gen9' + formatParts[0];
 				format = formatParts.length > 1 ? formatParts[0] + '@@@' + formatParts[1] : formatParts[0];
 			}
 

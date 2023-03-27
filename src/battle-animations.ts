@@ -1477,6 +1477,9 @@ export class BattleScene implements BattleSceneStub {
 	animDragOut(pokemon: Pokemon) {
 		return pokemon.sprite.animDragOut(pokemon);
 	}
+	resetStatbar(pokemon: Pokemon, startHidden?: boolean) {
+		return pokemon.sprite.resetStatbar(pokemon, startHidden);
+	}
 	updateStatbar(pokemon: Pokemon, updatePrevhp?: boolean, updateHp?: boolean) {
 		return pokemon.sprite.updateStatbar(pokemon, updatePrevhp, updateHp);
 	}
@@ -1817,6 +1820,7 @@ export class PokemonSprite extends Sprite {
 		shelltrap: ['Trap set', 'neutral'],
 		powder: ['Powder', 'bad'],
 		electrify: ['Electrify', 'bad'],
+		glaiverush: ['Glaive Rush', 'bad'],
 		ragepowder: ['Rage Powder', 'good'],
 		followme: ['Follow Me', 'good'],
 		instruct: ['Instruct', 'neutral'],
@@ -2506,27 +2510,32 @@ export class PokemonSprite extends Sprite {
 			xscale: 0,
 			opacity: 0,
 		}, sp));
-		this.$el.animate(this.scene.pos({
-			x: this.x,
-			y: this.y,
-			z: this.z,
-			yscale: 0,
-			xscale: 0,
-			opacity: 0.3,
-		}, oldsp), 300, () => {
-			if (this.cryurl && doCry) {
-				BattleSound.playEffect(this.cryurl);
-			}
+		if (speciesid === 'palafinhero') {
 			this.$el.replaceWith($newEl);
 			this.$el = $newEl;
-			this.$el.animate(scene.pos({
+		} else {
+			this.$el.animate(this.scene.pos({
 				x: this.x,
 				y: this.y,
 				z: this.z,
-				opacity: 1,
-			}, sp), 300);
-		});
-		this.scene.wait(500);
+				yscale: 0,
+				xscale: 0,
+				opacity: 0.3,
+			}, oldsp), 300, () => {
+				if (this.cryurl && doCry) {
+					BattleSound.playEffect(this.cryurl);
+				}
+				this.$el.replaceWith($newEl);
+				this.$el = $newEl;
+				this.$el.animate(scene.pos({
+					x: this.x,
+					y: this.y,
+					z: this.z,
+					opacity: 1,
+				}, sp), 300);
+			});
+			this.scene.wait(500);
+		}
 
 		this.scene.updateSidebar(pokemon.side);
 		if (isPermanent) {

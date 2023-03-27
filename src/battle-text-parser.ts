@@ -144,7 +144,7 @@ class BattleTextParser {
 				kwArgs.item = arg3;
 			} else if (id === 'magnitude') {
 				kwArgs.number = arg3;
-			} else if (id === 'skillswap' || id === 'mummy' || id === 'wanderingspirit') {
+			} else if (id === 'skillswap' || id === 'mummy' || id === 'lingeringaroma' || id === 'wanderingspirit') {
 				kwArgs.ability = arg3;
 				kwArgs.ability2 = arg4;
 			} else if ([
@@ -788,9 +788,6 @@ class BattleTextParser {
 				return this.template('upkeep', weather, 'NODEFAULT');
 			}
 			const line1 = this.maybeAbility(kwArgs.from, kwArgs.of);
-			if (BattleTextParser.effectId(kwArgs.from) === 'orichalcumpulse') {
-				return line1 + this.template('start', 'orichalcumpulse').replace('[POKEMON]', this.pokemon(kwArgs.of));
-			}
 			let template = this.template('start', weather, 'NODEFAULT');
 			if (!template) template = this.template('startFieldEffect').replace('[EFFECT]', this.effect(weather));
 			return line1 + template;
@@ -858,12 +855,23 @@ class BattleTextParser {
 				return line1 + template.replace('[TARGET]', this.pokemon(target));
 			}
 
+			if (id === 'commander') {
+				// Commander didn't have a message prior to v1.2.0 of SV
+				// so this is for backwards compatibility
+				if (target === pokemon) return line1;
+				const template = this.template('activate', id);
+				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace(/\[TARGET\]/g, this.pokemon(target));
+			}
+
 			let templateId = 'activate';
 			if (id === 'forewarn' && pokemon === target) {
 				templateId = 'activateNoTarget';
 			}
 			if ((id === 'protosynthesis' || id === 'quarkdrive') && kwArgs.fromitem) {
 				templateId = 'activateFromItem';
+			}
+			if (id === 'orichalcumpulse' && kwArgs.source) {
+				templateId = 'start';
 			}
 			let template = this.template(templateId, effect, 'NODEFAULT');
 			if (!template) {
@@ -1027,7 +1035,7 @@ class BattleTextParser {
 			const line1 = this.maybeAbility(kwArgs.from, kwArgs.of || pokemon);
 			let templateId = 'block';
 			if (['desolateland', 'primordialsea'].includes(blocker) &&
-				!['sunnyday', 'raindance', 'sandstorm', 'hail', 'snow'].includes(id)) {
+				!['sunnyday', 'raindance', 'sandstorm', 'hail', 'snowscape', 'chillyreception'].includes(id)) {
 				templateId = 'blockMove';
 			} else if (blocker === 'uproar' && kwArgs.msg) {
 				templateId = 'blockSelf';

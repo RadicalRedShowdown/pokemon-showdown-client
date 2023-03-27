@@ -566,11 +566,14 @@ const Dex = new class implements ModdedDex {
 				formeid === '-crowned' ||
 				formeid === '-eternal' ||
 				formeid === '-eternamax' ||
+				formeid === '-four' ||
 				formeid === '-hangry' ||
+				formeid === '-hero' ||
 				formeid === '-lowkey' ||
 				formeid === '-noice' ||
 				formeid === '-primal' ||
 				formeid === '-rapidstrike' ||
+				formeid === '-roaming' ||
 				formeid === '-school' ||
 				formeid === '-sky' ||
 				formeid === '-starter' ||
@@ -583,8 +586,10 @@ const Dex = new class implements ModdedDex {
 				baseSpeciesid === 'indeedee' ||
 				baseSpeciesid === 'lycanroc' ||
 				baseSpeciesid === 'necrozma' ||
+				baseSpeciesid === 'oinkologne' ||
 				baseSpeciesid === 'oricorio' ||
 				baseSpeciesid === 'slowpoke' ||
+				baseSpeciesid === 'tatsugiri' ||
 				baseSpeciesid === 'zygarde'
 			)) {
 				spriteData.cryurl += formeid;
@@ -724,7 +729,7 @@ const Dex = new class implements ModdedDex {
 		let top = Math.floor(num / 12) * 30;
 		let left = (num % 12) * 40;
 		let fainted = ((pokemon as Pokemon | ServerPokemon)?.fainted ? `;opacity:.3;filter:grayscale(100%) brightness(.5)` : ``);
-		return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-sheet.png?v10) no-repeat scroll -${left}px -${top}px${fainted}`;
+		return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-sheet.png?v12) no-repeat scroll -${left}px -${top}px${fainted}`;
 	}
 
 	getTeambuilderSpriteData(pokemon: any, gen: number = 0): TeambuilderSpriteData {
