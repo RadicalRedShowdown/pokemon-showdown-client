@@ -1072,6 +1072,10 @@ class BattleTooltips {
 			}
 		}
 
+		if (item === 'leekstick' && speciesName === 'Farfetch\u2019d') {
+			speedModifiers.push(1.5);
+		}
+
 		// check abilities other than Guts and Quick Feet
 		// check items other than light ball, thick club, metal/quick powder
 		if (this.battle.gen <= 2) {
@@ -1725,7 +1729,7 @@ class BattleTooltips {
 		if (move.id === 'magnitude') {
 			value.setRange(10, 150);
 		}
-		if (['venoshock', 'barbbarrage'].includes(move.id) && target) {
+		if (['venoshock'].includes(move.id) && target) {
 			if (['psn', 'tox'].includes(target.status)) {
 				value.modify(2, move.name + ' + Poison');
 			}
@@ -1932,7 +1936,7 @@ class BattleTooltips {
 		if (move.flags['kick']) {
 			value.abilityModify(1.3, 'Striker');
 		}
-		if (move.recoil || move.hasCrashDamage) {
+		if (move.recoil || move.hasCrashDamage || ['explosion', 'mistyexplosion', 'selfdestruct'].includes(move.id)) {
 			value.abilityModify(1.2, 'Reckless');
 		}
 
