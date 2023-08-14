@@ -833,44 +833,18 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		if (!learnset) continue;
 		learnsets[id] = {};
 		for (const moveid in learnset) {
-			const gens = learnset[moveid].map(x => Number(x[0]));
-			const minGen = Math.min(...gens);
-
-			if (minGen <= 4 && (gen3HMs.has(moveid) || gen4HMs.has(moveid))) {
-				let legalGens = '';
-				let available = false;
-
-				if (minGen === 3) {
-					legalGens += '3';
-					available = true;
-				}
-				if (available) available = !gen3HMs.has(moveid);
-
-				if (available || gens.includes(4)) {
-					legalGens += '4';
-					available = true;
-				}
-				if (available) available = !gen4HMs.has(moveid);
-
-				let minUpperGen = available ? 5 : Math.min(
-					...gens.filter(gen => gen > 4)
-				);
-				legalGens += '0123456789'.slice(minUpperGen);
-				learnsets[id][moveid] = legalGens;
-			} else {
-				learnsets[id][moveid] = '0123456789'.slice(minGen);
+			learnsets[id][moveid] = '9a';
+		}
+	}
+	for (const id in Dex.mod('gen8rr3.1').data.Learnsets) {
+		const learnset = Dex.mod('gen8rr3.1').data.Learnsets[id].learnset;
+		if (!learnset) continue;
+		for (const moveid in learnset) {
+			if (!learnsets[id]) {
+				throw new Error(`${id} has a Gen 8 learnset but not a modern learnset`);
 			}
-
-			if (gens.indexOf(6) >= 0) learnsets[id][moveid] += 'p';
-			if (gens.indexOf(7) >= 0 && learnset[moveid].some(x => x[0] === '7' && x !== '7V')) {
-				learnsets[id][moveid] += 'q';
-			}
-			if (gens.indexOf(8) >= 0 && learnset[moveid].some(x => x[0] === '8' && x !== '8V')) {
-				learnsets[id][moveid] += 'g';
-			}
-			if (gens.indexOf(9) >= 0 && learnset[moveid].some(x => x[0] === '9' && x !== '9V')) {
-				learnsets[id][moveid] += 'a';
-			}
+			if (!learnsets[id][moveid]) learnsets[id][moveid] = '';
+			learnsets[id][moveid] = '8g' + learnsets[id][moveid];
 		}
 	}
 	const G2Learnsets = Dex.mod('gen2').data.Learnsets;
