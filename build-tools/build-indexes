@@ -346,7 +346,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (isStadium) genStr += 'stadium' + (genNum > 1 ? genNum : '');
 			return genStr;
 		})();
-		const mod = gen === 'gen9' ? 'gen9rr' : gen;
+		const mod = gen === 'gen9' ? 'gen9rr' : gen === 'gen8' ? 'gen8rr3.1' : gen;
 		// process.stdout.write("" + gen + (isDoubles ? " doubles" : "") + "... ");
 		const pokemon = Object.keys(Dex.data.Pokedex);
 		pokemon.sort();
@@ -963,14 +963,10 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	// Past gen table
 	//
 
-	BattleTeambuilderTable['gen8'].overrideSpeciesData = {};
-	BattleTeambuilderTable['gen8'].overrideMoveData = {};
-	BattleTeambuilderTable['gen8'].overrideAbilityData = {};
-	BattleTeambuilderTable['gen8'].overrideItemDesc = {};
-	for (const genNum of [7, 6, 5, 4, 3, 2, 1]) {
+	for (const genNum of [8, 7, 6, 5, 4, 3, 2, 1]) {
 		const gen = 'gen' + genNum;
 		const nextGen = 'gen' + (genNum + 1);
-		const genDex = Dex.mod(gen);
+		const genDex = Dex.mod(gen === 'gen8' ? 'gen8rr3.1' : gen);
 		const genData = genDex.data;
 		const nextGenDex = Dex.mod(nextGen);
 		const nextGenData = nextGenDex.data;
