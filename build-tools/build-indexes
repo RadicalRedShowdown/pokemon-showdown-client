@@ -1067,53 +1067,53 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	//
 
 	{
-		BattleTeambuilderTable['gen8old'] = {};
-		const gen8Data = Dex.mod('gen8').data;
+		BattleTeambuilderTable['gen9old'] = {};
+		const gen9Data = Dex.mod('gen9').data;
 		const overrideSpeciesData = {};
-		BattleTeambuilderTable['gen8old'].overrideSpeciesData = overrideSpeciesData;
+		BattleTeambuilderTable['gen9old'].overrideSpeciesData = overrideSpeciesData;
 		const overrideSpeciesKeys = ['abilities', 'baseStats', 'types'];
-		for (const id in gen8Data.Pokedex) {
-			const gen8Entry = gen8Data.Pokedex[id];
+		for (const id in gen9Data.Pokedex) {
+			const gen9Entry = gen9Data.Pokedex[id];
 			const rrEntry = Dex.data.Pokedex[id];
 			for (const key of overrideSpeciesKeys) {
-				if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
+				if (JSON.stringify(gen9Entry[key]) !== JSON.stringify(rrEntry[key])) {
 					if (!overrideSpeciesData[id]) overrideSpeciesData[id] = {};
-					overrideSpeciesData[id][key] = gen8Entry[key];
+					overrideSpeciesData[id][key] = gen9Entry[key];
 				}
 			}
 		}
 
 		const overrideMoveData = {};
-		BattleTeambuilderTable['gen8old'].overrideMoveData = overrideMoveData;
+		BattleTeambuilderTable['gen9old'].overrideMoveData = overrideMoveData;
 		const overrideMoveKeys = ['accuracy', 'basePower', 'category', 'desc', 'pp', 'shortDesc', 'type'];
-		for (const id in gen8Data.Moves) {
-			const gen8Entry = Dex.mod('gen8').moves.get(id);
+		for (const id in gen9Data.Moves) {
+			const gen9Entry = Dex.mod('gen9').moves.get(id);
 			const rrEntry = Dex.moves.get(id);
 			for (const key of overrideMoveKeys) {
-				if (JSON.stringify(gen8Entry[key]) !== JSON.stringify(rrEntry[key])) {
+				if (JSON.stringify(gen9Entry[key]) !== JSON.stringify(rrEntry[key])) {
 					if (!overrideMoveData[id]) overrideMoveData[id] = {};
-					overrideMoveData[id][key] = gen8Entry[key];
+					overrideMoveData[id][key] = gen9Entry[key];
 				}
 			}
 		}
 
 		const overrideItemDesc = {};
-		BattleTeambuilderTable['gen8old'].overrideItemDesc = overrideItemDesc;
-		for (const id in gen8Data.Items) {
-			const gen8Entry = Dex.mod('gen8').items.get(id);
+		BattleTeambuilderTable['gen9old'].overrideItemDesc = overrideItemDesc;
+		for (const id in gen9Data.Items) {
+			const gen9Entry = Dex.mod('gen9').items.get(id);
 			const rrEntry = Dex.items.get(id);
-			if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideItemDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
+			if ((gen9Entry.shortDesc || gen9Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
+				overrideItemDesc[id] = (gen9Entry.shortDesc || gen9Entry.desc);
 			}
 		}
 
 		const overrideAbilityDesc = {};
-		BattleTeambuilderTable['gen8old'].overrideAbilityDesc = overrideAbilityDesc;
-		for (const id in gen8Data.Abilities) {
-			const gen8Entry = Dex.mod('gen8').abilities.get(id);
+		BattleTeambuilderTable['gen9old'].overrideAbilityDesc = overrideAbilityDesc;
+		for (const id in gen9Data.Abilities) {
+			const gen9Entry = Dex.mod('gen9').abilities.get(id);
 			const rrEntry = Dex.abilities.get(id);
-			if ((gen8Entry.shortDesc || gen8Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
-				overrideAbilityDesc[id] = (gen8Entry.shortDesc || gen8Entry.desc);
+			if ((gen9Entry.shortDesc || gen9Entry.desc) !== (rrEntry.shortDesc || rrEntry.desc)) {
+				overrideAbilityDesc[id] = (gen9Entry.shortDesc || gen9Entry.desc);
 			}
 		}
 	}
