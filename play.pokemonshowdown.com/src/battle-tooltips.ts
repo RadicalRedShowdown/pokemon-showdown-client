@@ -2195,6 +2195,14 @@ class BattleTooltips {
 			value.itemModify(1.2);
 			return value;
 		}
+		if (speciesName === 'Electivire' && itemName === 'Electirizer' && moveType === 'Fighting') {
+			value.itemModify(1.5);
+			return value;
+		}
+		if (speciesName === 'Sunflora' && itemName === 'Burnt Seed' && moveType === 'Fire') {
+			value.itemModify(1.5);
+			return value;
+		}
 
 		// Gems
 		if (BattleTooltips.noGemMoves.includes(moveName)) return value;
