@@ -699,6 +699,62 @@ export class BattleScene implements BattleSceneStub {
 			for (const badgeData of side.badges.slice(0, 3)) {
 				// ${badge.type}|${badge.format}|${BADGE_THRESHOLDS[badge.type]}-${badge.season}
 				const [type, format, details] = badgeData.split('|');
+				if (format === 'gen9rrbt' || format === 'gen9rrbattletower') {
+					const btBadges: {[k: string]: {file: string, title: string}} = {
+						'marowak-boss': {
+							file: 'bt_marowak.png',
+							title: 'Cleared Battle Tower Boss: Marowak-Alola',
+						},
+						'radical-red-boss': {
+							file: 'bt_radicalred.png',
+							title: 'Cleared Battle Tower Boss: The Radical Red',
+						},
+					};
+					const badge = btBadges[details];
+					if (badge) {
+						badgehtml += `<img src="${Dex.resourcePrefix}/sprites/misc/${badge.file}" style="padding: 0px 1px 0px 1px" width="16px" height="16px" title="${badge.title}" />`;
+						continue;
+					}
+				}
+				if (format === 'rrcustom') {
+					const rrBadges: {[k: string]: {file: string, title: string}} = {
+						rrgt: {file: 'rrbadge_rrgt.png', title: 'won RRGT'},
+						rrgt2: {file: 'rrbadge_rrgt2.png', title: 'won RRGT II'},
+						rrgt3: {file: 'rrbadge_rrgt3.png', title: 'won RRGT III'},
+						rrgt4: {file: 'rrbadge_rrgt4.png', title: 'won RRGT IV'},
+						rrgt5: {file: 'rrbadge_rrgt5.png', title: 'won RRGT V'},
+						rrgt6: {file: 'rrbadge_rrgt6.png', title: 'won RRGT VI'},
+						rrsp: {file: 'rrbadge_rrsp.png', title: 'won RRSP'},
+						rrsp2: {file: 'rrbadge_rrsp2.png', title: 'won RRSP II'},
+						rrbh: {file: 'rrbadge_rrbh.png', title: 'won RRBH'},
+						rrwl: {file: 'rrbadge_rrwl.png', title: 'won RRWL'},
+						rram: {file: 'rrbadge_rram.png', title: 'won RRAM'},
+						rrc: {file: 'rrbadge_rrc.png', title: 'won RRC'},
+						rrdlcommissioner: {file: 'rrbadge_rrdlcommissioner.png', title: 'is the RRDL Commissioner'},
+						council: {file: 'rrbadge_council.png', title: 'is part of the RRSH Council'},
+						clementino: {file: 'rrbadge_clementino.png', title: 'is Clementino'},
+						marowakboss: {file: 'bt_marowak.png', title: 'cleared Marowak-Alola Boss'},
+						houndoomboss: {file: 'bt_radicalred.png', title: 'cleared The Radical Red'},
+						dhelmise1: {file: 'rrbadge_dhelmise1.png', title: 'won Dhelmise Season I'},
+						dhelmise2: {file: 'rrbadge_dhelmise2.png', title: 'won Dhelmise Season II'},
+						dhelmise3: {file: 'rrbadge_dhelmise3.png', title: 'won Dhelmise Season III'},
+						dhelmise4: {file: 'rrbadge_dhelmise4.png', title: 'won Dhelmise Season IV'},
+						mantine2: {file: 'rrbadge_mantine2.png', title: 'won Mantine Season II'},
+						mantine3: {file: 'rrbadge_mantine3.png', title: 'won Mantine Season III'},
+						mantine4: {file: 'rrbadge_mantine4.png', title: 'won Mantine Season IV'},
+						wishiwashi2: {file: 'rrbadge_wishiwashi2.png', title: 'won Wishiwashi Season II'},
+						wishiwashi3: {file: 'rrbadge_wishiwashi3.png', title: 'won Wishiwashi Season III'},
+						wishiwashi4: {file: 'rrbadge_wishiwashi4.png', title: 'won Wishiwashi Season IV'},
+						feebas3: {file: 'rrbadge_feebas3.png', title: 'won Feebas Season III'},
+						feebas4: {file: 'rrbadge_feebas4.png', title: 'won Feebas Season IV'},
+					};
+					const badge = rrBadges[toID(details)];
+					if (badge) {
+						const hover = BattleLog.escapeHTML(`${side.name || 'User'} ${badge.title}`);
+						badgehtml += `<img src="${Dex.resourcePrefix}/sprites/misc/${badge.file}" style="padding: 0px 1px 0px 1px" width="16px" height="16px" title="${hover}" />`;
+						continue;
+					}
+				}
 				// todo, maybe make this more easily configured if we ever add badges for other stuff?
 				// but idk that we're planning that for now so
 				const [threshold] = details.split('-');

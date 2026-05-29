@@ -7,6 +7,11 @@ npm-debug.log
 /caches/
 
 /play.pokemonshowdown.com/sprites/
+!/play.pokemonshowdown.com/sprites/
+!/play.pokemonshowdown.com/sprites/misc/
+!/play.pokemonshowdown.com/sprites/misc/bt_marowak.png
+!/play.pokemonshowdown.com/sprites/misc/bt_radicalred.png
+!/play.pokemonshowdown.com/sprites/misc/rrbadge_*.png
 /play.pokemonshowdown.com/audio/
 /play.pokemonshowdown.com/index.php
 /play.pokemonshowdown.com/index.html
@@ -17,6 +22,7 @@ npm-debug.log
 /play.pokemonshowdown.com/js/server/
 /play.pokemonshowdown.com/js/*.js.map
 /play.pokemonshowdown.com/js/battle*.js
+!/play.pokemonshowdown.com/js/battle-animations.js
 /play.pokemonshowdown.com/js/panel*.js
 /play.pokemonshowdown.com/js/replay-embed.js
 /play.pokemonshowdown.com/js/client-main.js
