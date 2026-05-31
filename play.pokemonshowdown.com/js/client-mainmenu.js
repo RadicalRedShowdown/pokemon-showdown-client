@@ -87,6 +87,10 @@
 			Storage.whenPrefsLoaded(function () {
 				var newsid = Number(Storage.prefs('newsid'));
 				var $news = this.$('.news-embed');
+				var $billboard = this.$('.billboard-embed');
+				if ($(window).width() < 628) {
+					self.minimizePM($billboard);
+				}
 				if (!newsid) {
 					if ($(window).width() < 628) {
 						// News starts minimized in phone layout
